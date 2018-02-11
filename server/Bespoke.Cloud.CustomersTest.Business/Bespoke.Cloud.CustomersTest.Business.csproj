@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Bespoke.Cloud.CustomersTest.Business.Interfaces\Bespoke.Cloud.CustomersTest.Business.Interfaces.csproj" />
+    <ProjectReference Include="..\Bespoke.Cloud.CustomersTest.Entities\Bespoke.Cloud.CustomersTest.Entities.csproj" />
+    <ProjectReference Include="..\Bespoke.Cloud.CustomersTest.Repository.Interfaces\Bespoke.Cloud.CustomersTest.Repository.Interfaces.csproj" />
+  </ItemGroup>
+
+</Project>

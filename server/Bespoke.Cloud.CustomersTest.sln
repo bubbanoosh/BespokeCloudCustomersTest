@@ -15,6 +15,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bespoke.Cloud.CustomersTest
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bespoke.Cloud.CustomersTest.API", "Bespoke.Cloud.CustomersTest.API\Bespoke.Cloud.CustomersTest.API\Bespoke.Cloud.CustomersTest.API.csproj", "{B030476E-8CBD-4EF9-9E4E-D8351C964091}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{3ECB01F2-A802-44E1-8128-22D66BA4B129}"
+	ProjectSection(SolutionItems) = preProject
+		SQL\BespokeCloud_CustomersTest.sql = SQL\BespokeCloud_CustomersTest.sql
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

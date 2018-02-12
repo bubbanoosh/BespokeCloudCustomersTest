@@ -29,24 +29,25 @@ class App extends React.Component {
             <div className="container">
                 <Header />
                 <main>
-                    {alert.message &&
-                        <div className={`alert ${alert.type} alert-dismissible fade show`} role="alert">
-                            {alert.message}
-                            <button type="button" className="close" data-dismiss="alert" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
+                    <div className="container">
+                        <div class="row">
+                            <div class="col-md-12">
+
+                                {alert.message &&
+                                    <div className={`alert ${alert.type}`} role="alert">
+                                        {alert.message}
+                                    </div>
+                                }
+                                <Route exact path="/" component={HomePage} />
+                                <Route exact path="/customer/add" component={CustomerAddPage} />
+                                <Route exact path="/customer/edit/:id" component={CustomerEditPage} />
+                                <Route exact path="/customer/delete/:id" component={CustomerDeletePage} />
+                            </div>
                         </div>
-                    }
-                    <Route exact path="/" component={HomePage} />
-                    <Route exact path="/customer/add" component={CustomerAddPage} />
-                    <Route exact path="/customer/edit/:id" component={CustomerEditPage} />
-                    <Route exact path="/customer/delete/:id" component={CustomerDeletePage} />
+                    </div>
                 </main>
                 <Footer />
             </div>
-
-
-
         );
     }
 }

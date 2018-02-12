@@ -66,17 +66,20 @@ function getCustomers(searchText) {
     function failure(error) { return { type: actionTypes.GETALL_CUSTOMERS_FAILURE, error } }
 }
 
-function removeCustomer(id) {
+function removeCustomer(customer) {
     return dispatch => {
-        dispatch(request(id));
+        dispatch(request(customer.id));
 
-        customerService.removeCustomer(id)
+        customerService.removeCustomer(customer.id)
             .then(
                 () => { 
-                    dispatch(success(id));
+                    dispatch(success(customer.id));
+                    history.push('/');
+                    dispatch(alertActions.success('Customer deleted successfully'));
                 },
                 error => {
-                    dispatch(failure(id, error));
+                    dispatch(failure(customer.id, error));
+                    dispatch(alertActions.error(error));
                 }
             );
     };
@@ -94,7 +97,7 @@ function updateCustomer(customer) {
             .then(
                 () => { 
                     dispatch(success());
-                    history.push('/customers');
+                    history.push('/');
                     dispatch(alertActions.success('Customer updated successfully'));
                 },
                 error => {

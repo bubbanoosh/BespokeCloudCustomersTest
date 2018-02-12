@@ -1,10 +1,10 @@
 import { combineReducers } from 'redux';
 
-import { customers } from './customers.reducer';
+import { customersState } from './customers.reducer';
 import { alert } from './alert.reducer';
 
 const rootReducer = combineReducers({
-  customers,
+    customersState,
   alert
 });
 

@@ -3,20 +3,36 @@ import { connect } from 'react-redux'
 import { Link } from 'react-router-dom';
 import { customerActions } from '../_actions/customer.actions';
 
-import { Loader } from '../_components/Common'
-import CustomerList from '../_components/CustomerList'
-
 import PropTypes from 'prop-types';
+
+import { Loader } from '../_components/Common'
+import CustomerForm from '../_components/CustomerForm'
 
 class CustomerDeletePage extends Component {
 
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            id: this.props.match.params.id,
+            customer: {
+                id: 0,
+                firstName: '',
+                lastName: '',
+                email: ''
+            }
+        };
+    }
+
     componentDidMount() {
-        this.props.dispatch(customerActions.getCustomers(''));
+        this.props.dispatch(customerActions.getCustomer(this.state.id));
+
     }
 
     render() {
 
-        const { customers } = this.props
+        const { customersState } = this.props
+        const { deleting, customer } = customersState
 
         return (
             <div>
@@ -25,48 +41,23 @@ class CustomerDeletePage extends Component {
                         <li className="breadcrumb-item"><Link to="/">Home</Link></li>
                         <li className="breadcrumb-item active" aria-current="page">Delete Customer</li>
                     </ol>
-                    </nav>
-                <h2>Delete Customer</h2>
+                </nav>
 
-                {customers.loading ? <Loader /> : (customers.customersData.length > 0 &&
-                    <form>
-                        <div className="form-row">
-                            <div className="form-group col-md-6">
-                                <label htmlFor="firstName">Give name</label>
-                                <input type="text" className="form-control" id="firstName" placeholder="Given name" />
-                            </div>
-                            <div className="form-group col-md-6">
-                                <label htmlFor="lastName">Surname</label>
-                                <input type="text" className="form-control" id="lastName" placeholder="Surname" />
-                            </div>
-                        </div>
-                        <div className="form-group">
-                            <label htmlFor="emailAddress">Email</label>
-                            <input type="email" className="form-control" id="emailAddress" placeholder="name@domain.com" />
-                        </div>
-
-                        <div className="btn-group mr-2" role="group" aria-label="First group">
-                            <button type="submit" className="btn btn-danger">Delete Customer</button>
-                            <Link to="/" className="btn btn-secondary">
-                                Cancel
-                            </Link>
-                        </div>
-                    </form>
-                )}
-
+                {customer && <CustomerForm customer={customer} loading={deleting} operationText={'Delete'} customerAction={customerActions.removeCustomer} disabled={true} />}
+                
             </div>
         );
     }
 }
 
 CustomerDeletePage.propTypes = {
-    customers: PropTypes.object.isRequired,
+    customersState: PropTypes.object.isRequired
 };
 
 function mapStateToProps(state) {
-    const { customers } = state;
+    const { customersState } = state;
     return {
-        customers
+        customersState
     }
 }
 

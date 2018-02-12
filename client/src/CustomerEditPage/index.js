@@ -3,62 +3,35 @@ import { connect } from 'react-redux'
 import { Link } from 'react-router-dom';
 import { customerActions } from '../_actions/customer.actions';
 
+import PropTypes from 'prop-types';
+
 import { Loader } from '../_components/Common'
+import CustomerForm from '../_components/CustomerForm'
 
 class CustomerEditPage extends Component {
-
-    componentDidMount() {
-        this.setState({id: this.props.match.params.id});
-        this.props.dispatch(customerActions.getCustomer(this.state.id));
-
-    }
-
+    
     constructor(props) {
         super(props);
 
         this.state = {
-            id: 0,
-            customers: this.props,
+            id: this.props.match.params.id,
             customer: {
                 id: 0,
                 firstName: '',
                 lastName: '',
                 email: ''
-            },
-            submitted: false
-        };
-
-        this.handleChange = this.handleChange.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
-    }
-
-    handleChange(event) {
-        const { name, value } = event.target;
-        const { customer } = this.state;
-        this.setState({
-            customer: {
-                ...customer,
-                [name]: value
             }
-        });
+        };
     }
 
-    handleSubmit(event) {
-        event.preventDefault();
-
-        this.setState({ submitted: true });
-        const { customer } = this.state;
-        const { dispatch } = this.props;
-        if (customer.firstName && customer.lastName && customer.email) {
-            dispatch(customerActions.addCustomer(customer));
-        }
+    componentDidMount() {
+        this.props.dispatch(customerActions.getCustomer(this.state.id));
     }
-
 
     render() {
 
-        const { updating, customers } = this.props;
-        const { customer, submitted } = this.state;
+        const { customersState } = this.props
+        const { updating, customer } = customersState
 
         return (
             <div>
@@ -68,48 +41,21 @@ class CustomerEditPage extends Component {
                         <li className="breadcrumb-item active" aria-current="page">Edit Customer</li>
                     </ol>
                 </nav>
-                <h2>Edit Customer: {customer.firstName}</h2>
 
-                <form name="form" onSubmit={this.handleSubmit}>
-                    <div className="form-row">
-                        <div className="form-group col-md-6">
-                            <label htmlFor="firstName">Give name</label>
-                            <input type="text" className="form-control" name="firstName" id="firstName" 
-                                placeholder="Given name" value={customer.firstName} onChange={this.handleChange} required 
-                            />
-                        </div>
-                        <div className="form-group col-md-6">
-                            <label htmlFor="lastName">Surname</label>
-                            <input type="text" className="form-control" name="lastName" id="lastName"
-                                placeholder="Surname" value={customer.lastName} onChange={this.handleChange} required 
-                            />
-                        </div>
-                    </div>
-                    <div className="form-group">
-                        <label htmlFor="emailAddress">Email</label>
-                        <input type="email" className="form-control" name="email" id="email" 
-                            placeholder="name@domain.com" value={customer.email} onChange={this.handleChange} required 
-                        />
-                    </div>
-
-                    <div className="btn-group mr-2" role="group" aria-label="First group">
-                        <button className="btn btn-primary">Edit Customer</button>
-                        <Link to="/" className="btn btn-danger">
-                            Cancel
-                        </Link>
-                        {updating && <Loader />}
-                    </div>
-                </form>
-
+                {customer && <CustomerForm customer={customer} loading={updating} operationText={'Edit'} customerAction={customerActions.updateCustomer} disabled={false} />}
             </div>
         );
     }
 }
 
+CustomerEditPage.propTypes = {
+    customersState: PropTypes.object.isRequired
+};
+
 function mapStateToProps(state) {
-    const { updating } = state.customers;
+    const { customersState } = state;
     return {
-        updating
+        customersState
     }
 }
 

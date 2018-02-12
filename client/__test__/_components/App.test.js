@@ -15,7 +15,7 @@ let store;
 beforeEach(() => {
   //creates the store with any initial state or middleware needed  
   store = mockStore(initialState)
-  wrapper = shallow(<App store={store}/>)
+  wrapper = mount(shallow(<App store={store}/>).get(0))
  })
 
 

@@ -11,24 +11,24 @@ const initialState = {
     updating: false,
 }
 
-export function customers(state = initialState, action) {
+export function customersState(state = initialState, action) {
     switch (action.type) {
         case actionTypes.GET_CUSTOMER_REQUEST:
             return {
                 ...state,
-                loading: true
+                updating: true
             };
         case actionTypes.GET_CUSTOMER_SUCCESS:
             return {
                 ...state,
                 customer: action.customer,
-                loading: false
+                updating: false
             };
         case actionTypes.GET_CUSTOMER_FAILURE:
             return {
                 ...state,
                 error: action.error,
-                loading: false
+                updating: false
             };
         case actionTypes.GETALL_CUSTOMERS_REQUEST:
             return {
@@ -47,19 +47,19 @@ export function customers(state = initialState, action) {
                 loading: false
             };
         case actionTypes.ADD_CUSTOMER_REQUEST:
-            return { 
+            return {
                 ...state,
-                adding: true 
+                adding: true
             };
         case actionTypes.ADD_CUSTOMER_SUCCESS:
             return { ...state };
         case actionTypes.ADD_CUSTOMER_FAILURE:
-            return {  };
+            return {};
         case actionTypes.REMOVE_CUSTOMER_REQUEST:
             // add 'deleting:true' property to customer being deleted
             return {
                 ...state,
-                customers: state.customers.map(customer =>
+                customersData: state.customersData.map(customer =>
                     customer.id === action.id
                         ? { ...customer, deleting: true }
                         : customer
@@ -68,13 +68,13 @@ export function customers(state = initialState, action) {
         case actionTypes.REMOVE_CUSTOMER_SUCCESS:
             // remove deleted customer from state
             return {
-                customers: state.customers.filter(customer => customer.id !== action.id)
+                customersData: state.customersData.filter(customer => customer.id !== action.id)
             };
         case actionTypes.REMOVE_CUSTOMER_FAILURE:
             // remove 'deleting:true' property and add 'deleteError:[error]' property to customer 
             return {
                 ...state,
-                customers: state.customers.map(customer => {
+                customersData: state.customersData.map(customer => {
                     if (customer.id === action.id) {
                         // make copy of customer without 'deleting:true' property
                         const { deleting, ...customerCopy } = customer;
@@ -86,12 +86,25 @@ export function customers(state = initialState, action) {
                 })
             };
         case actionTypes.UPDATE_CUSTOMER_REQUEST:
-            return { updating: true };
+            return {
+                ...state,
+                customer: action.customer,
+                updating: true
+            };
         case actionTypes.UPDATE_CUSTOMER_SUCCESS:
-            return {};
+            return {
+                ...state,
+                customer: action.customer,
+                updating: true
+            };
         case actionTypes.UPDATE_CUSTOMER_FAILURE:
-            return {};
-        default:
+        return { 
+            ...state,
+            customer: action.customer,
+            updating: false,
+            error: action.error 
+        };
+    default:
             return state
     }
 }

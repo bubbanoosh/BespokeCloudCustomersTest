@@ -14,13 +14,10 @@ class HomePage extends Component {
         this.props.dispatch(customerActions.getCustomers(''));
     }
 
-    // onCalculateAverageWeightClick = () => {
-    //     this.props.calculateAverage(this.props.currentProducts);
-    // }
-
     render() {
 
-        const { customers } = this.props
+        const { customersState } = this.props
+        const { loading, customersData } = customersState
 
         return (
             <div>
@@ -35,8 +32,8 @@ class HomePage extends Component {
                     Add a customer
                 </Link>
 
-                {customers.loading ? <Loader /> : (customers.customersData.length > 0 &&
-                    <CustomerList customersData={customers.customersData} />)
+                {loading ? <Loader /> : (customersData.length > 0 &&
+                    <CustomerList customersData={customersData} />)
                 }
 
             </div>
@@ -45,13 +42,13 @@ class HomePage extends Component {
 }
 
 HomePage.propTypes = {
-    customers: PropTypes.object.isRequired,
+    customersState: PropTypes.object.isRequired,
 };
 
 function mapStateToProps(state) {
-    const { customers } = state;
+    const { customersState } = state;
     return {
-        customers
+        customersState
     }
 }
 

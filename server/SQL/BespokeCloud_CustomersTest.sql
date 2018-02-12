@@ -1,3 +1,12 @@
+
+
+USE [master]
+GO
+
+
+DROP Database IF EXISTS BespokeCloud_CustomerTest
+Go
+
 Create Database BespokeCloud_CustomerTest
 Go
 
@@ -31,8 +40,9 @@ GO
 -- Customers Inserts -----------------------------------
 -- Customers Inserts -----------------------------------
 INSERT INTO [dbo].[Customers] (FirstName, LastName, Email) VALUES ('Bryan', 'Oliver', 'bryan@bespoke.cloud');
+INSERT INTO [dbo].[Customers] (FirstName, LastName, Email) VALUES ('Paul', 'Sandys', 'bryan@bespoke.cloud');
 INSERT INTO [dbo].[Customers] (FirstName, LastName, Email) VALUES ('Errol', 'Willenberg', 'errol@bubbanoosh.com.au');
-INSERT INTO [dbo].[Customers] (FirstName, LastName, Email) VALUES ('Fred', 'Smith', 'fred@gmail.com');
+INSERT INTO [dbo].[Customers] (FirstName, LastName, Email) VALUES ('Kate', 'Illsley', 'kate.illsley@methodrecruitment.com.au');
 GO
 
 

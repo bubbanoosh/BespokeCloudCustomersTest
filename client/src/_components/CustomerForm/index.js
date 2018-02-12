@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom';
 import { Loader } from '../../_components/Common'
-import { customerActions } from '../../_actions/customer.actions';
 import { connect } from 'react-redux'
 
 class CustomerForm extends Component {

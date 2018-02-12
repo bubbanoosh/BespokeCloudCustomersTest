@@ -5,7 +5,6 @@ import { customerActions } from '../_actions/customer.actions';
 
 import PropTypes from 'prop-types';
 
-import { Loader } from '../_components/Common'
 import CustomerForm from '../_components/CustomerForm'
 
 class CustomerDeletePage extends Component {

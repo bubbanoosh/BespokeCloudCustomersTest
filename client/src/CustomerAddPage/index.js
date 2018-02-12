@@ -3,7 +3,6 @@ import { connect } from 'react-redux'
 import { Link } from 'react-router-dom';
 import { customerActions } from '../_actions/customer.actions';
 
-import { Loader } from '../_components/Common'
 import CustomerForm from '../_components/CustomerForm'
 
 class CustomerAddPage extends Component {
@@ -44,7 +43,7 @@ class CustomerAddPage extends Component {
 
     render() {
 
-        const { adding, customers } = this.props;
+        const { adding } = this.props;
         const { customer } = this.state;
 
         return (

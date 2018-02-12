@@ -13,8 +13,8 @@ const styles = {
 export const Footer = (props) => {
     return (
         <div className="container">
-            <div class="row">
-                <div class="col-md-12">
+            <div className="row">
+                <div className="col-md-12">
                     <footer className="footer" style={styles.footer}>
                         <div className="container">
                             <p className="text-muted">{appConfig.APP_HEADING}</p>

@@ -30,8 +30,8 @@ class App extends React.Component {
                 <Header />
                 <main>
                     <div className="container">
-                        <div class="row">
-                            <div class="col-md-12">
+                        <div className="row">
+                            <div className="col-md-12">
 
                                 {alert.message &&
                                     <div className={`alert ${alert.type}`} role="alert">

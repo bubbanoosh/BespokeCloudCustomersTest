@@ -31,7 +31,7 @@ function getCustomers(searchText) {
         method: 'GET'
     };
 
-    return fetch(`${appConfig.API_ROOT_URL}/customers/${searchText}`, requestOptions).then(handleResponse, handleError);
+    return fetch(`${appConfig.API_ROOT_URL}/customers/list/${searchText}`, requestOptions).then(handleResponse, handleError);
 }
 
 function removeCustomer(id) {

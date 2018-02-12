@@ -5,6 +5,7 @@ import { customerActions } from '../_actions/customer.actions';
 
 import { Loader } from '../_components/Common'
 import CustomerList from '../_components/CustomerList'
+import SearchForm from '../_components/SearchForm'
 
 import PropTypes from 'prop-types';
 
@@ -26,11 +27,21 @@ class HomePage extends Component {
                         <li className="breadcrumb-item active" aria-current="page">Home</li>
                     </ol>
                 </nav>
-                <h2>Customer list</h2>
-                
-                <Link to="/customer/add" className="btn btn-secondary">
-                    Add a customer
-                </Link>
+
+                <div className="container">
+                    <div className="row">
+                        <div className="col-md-10">
+                            <h2>Customer list</h2>
+                        </div>
+                        <div className="col-md-2">
+                            <Link to="/customer/add" className="btn btn-secondary">
+                                Add a customer
+                            </Link>
+                        </div>
+                    </div>
+                </div>
+
+                <SearchForm customerAction={customerActions.getCustomers} />
 
                 {loading ? <Loader /> : (customersData.length > 0 &&
                     <CustomerList customersData={customersData} />)

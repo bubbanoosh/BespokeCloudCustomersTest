@@ -21,7 +21,10 @@ namespace Bespoke.Cloud.CustomersTest.API.Controllers
             _logger = logger;
         }
 
-        // GET: api/Customers
+        /// <summary>
+        /// GET: api/Customers
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public IActionResult GetCustomers()
         {
@@ -30,7 +33,11 @@ namespace Bespoke.Cloud.CustomersTest.API.Controllers
             return Ok(customers);
         }
 
-        // GET: api/Customers/list/searchText?
+        /// <summary>
+        /// GET: api/Customers/list/searchText?
+        /// </summary>
+        /// <param name="searchText"></param>
+        /// <returns></returns>
         [HttpGet("list/{searchText?}", Name = "GetSearch")]
         public IActionResult GetCustomers(string searchText = "")
         {
@@ -39,7 +46,11 @@ namespace Bespoke.Cloud.CustomersTest.API.Controllers
             return Ok(customers);
         }
 
-        // GET: api/Customers/5
+        /// <summary>
+        /// GET: api/Customers/5
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpGet("{id}", Name = "Get")]
         public IActionResult Get(int id)
         {
@@ -55,7 +66,11 @@ namespace Bespoke.Cloud.CustomersTest.API.Controllers
             }
         }
 
-        // POST: api/Customers
+        /// <summary>
+        /// POST: api/Customers
+        /// </summary>
+        /// <param name="customer"></param>
+        /// <returns></returns>
         [HttpPost]
         public IActionResult Post([FromBody]Customer customer)
         {
@@ -80,12 +95,15 @@ namespace Bespoke.Cloud.CustomersTest.API.Controllers
                 return CreatedAtRoute("Get",
                     new { id },
                     customer);
-                //customer.Id = id;
-                //return Ok(customer);
             }
         }
 
-        // PUT: api/Customers/5
+        /// <summary>
+        /// PUT: api/Customers/5
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="customer"></param>
+        /// <returns></returns>
         [HttpPut("{id}")]
         public IActionResult Put(int id, [FromBody]Customer customer)
         {
@@ -112,7 +130,11 @@ namespace Bespoke.Cloud.CustomersTest.API.Controllers
             }
         }
 
-        // DELETE: api/ApiWithActions/5
+        /// <summary>
+        /// DELETE: api/ApiWithActions/5
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {

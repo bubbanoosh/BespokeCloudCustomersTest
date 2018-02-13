@@ -7,64 +7,61 @@ namespace Bespoke.Cloud.CustomersTest.Business
 {
     public class CustomerManager: ICustomerManager
     {
-        ICustomerRepository _userRepository;
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="userRepository"></param>
-        public CustomerManager(ICustomerRepository userRepository)
+        ICustomerRepository _customerRepository;
+
+        public CustomerManager(ICustomerRepository customerRepository)
         {
-            _userRepository = userRepository;
+            _customerRepository = customerRepository;
         }
 
         /// <summary>
-        /// 
+        /// Add a customer
         /// </summary>
-        /// <param name="user"></param>
+        /// <param name="customer"></param>
         /// <returns></returns>
-        public int AddCustomer(Customer user)
+        public int AddCustomer(Customer customer)
         {
-            return _userRepository.AddCustomer(user);
+            return _customerRepository.AddCustomer(customer);
         }
 
         /// <summary>
-        /// 
+        /// Remove customer
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
         public bool RemoveCustomer(int id)
         {
-            return _userRepository.RemoveCustomer(id);
+            return _customerRepository.RemoveCustomer(id);
         }
 
         /// <summary>
-        /// 
+        /// Get all or search customers
         /// </summary>
         /// <param name="searchText"></param>
         /// <returns></returns>
         public IList<Customer> GetCustomers(string searchText = "")
         {
-            return _userRepository.GetCustomers(searchText);
+            return _customerRepository.GetCustomers(searchText);
         }
 
         /// <summary>
-        /// 
+        /// Get a customer by id
         /// </summary>
-        /// <param name="userId"></param>
+        /// <param name="customerId"></param>
         /// <returns></returns>
-        public Customer GetCustomerById(int userId)
+        public Customer GetCustomerById(int customerId)
         {
-            return _userRepository.GetCustomerById(userId);
+            return _customerRepository.GetCustomerById(customerId);
         }
 
         /// <summary>
-        /// 
+        /// Update a customer (PUT not PATCH)
         /// </summary>
-        /// <param name="user"></param>
+        /// <param name="customer"></param>
         /// <returns></returns>
-        public bool UpdateCustomer(Customer user)
+        public bool UpdateCustomer(Customer customer)
         {
-            return _userRepository.UpdateCustomer(user);
+            return _customerRepository.UpdateCustomer(customer);
         }
     }
 }

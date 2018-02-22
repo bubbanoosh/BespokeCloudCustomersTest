@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Bespoke.Cloud.CustomersTest.API;
 
 namespace Bespoke.Cloud.CustomersTest
 {
@@ -85,6 +86,18 @@ namespace Bespoke.Cloud.CustomersTest
                     });
                 });
             }
+
+            // (^_^): Map DTOs
+            AutoMapper.Mapper.Initialize(cfg =>
+            {
+                cfg.CreateMap<Entities.Customer, API.Models.CustomerListDto>()
+                    .ForMember(dest => dest.Name, opt => opt.MapFrom(src =>
+                        $"{src.FirstName} {src.LastName}"));
+
+            });
+
+
+
 
             app.UseMvc();
         }

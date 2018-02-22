@@ -12,7 +12,7 @@ const CustomerItem = props => {
                     Delete
                 </Link>
             </div>
-            {props.customer.firstName} {props.customer.lastName}
+            {props.customer.name}
         </li>
     )
 }

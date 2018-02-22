@@ -43,7 +43,7 @@ class CustomerForm extends Component {
         const formState = disabled ? 'disabled' : ''
         return (
             <div>
-                <h2>{operationText} Customer{(customer.firstName || customer.lastName) && `: ${customer.firstName}`}&nbsp;{customer.lastName}</h2>
+                <h2>{operationText} Customer<span className="text-secondary">{(customer.firstName || customer.lastName) && `: ${customer.firstName}`}&nbsp;{customer.lastName}</span></h2>
 
 
                 <form name="form" onSubmit={this.handleSubmit}>

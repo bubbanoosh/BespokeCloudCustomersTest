@@ -36,6 +36,7 @@ CREATE TABLE [dbo].[Customers](
 
 GO
 
+-- DELETE FROM Customers
 -- Customers Inserts -----------------------------------
 -- Customers Inserts -----------------------------------
 -- Customers Inserts -----------------------------------

@@ -1,9 +1,12 @@
-﻿using Bespoke.Cloud.CustomersTest.API.Helpers;
+﻿using AutoMapper;
+using Bespoke.Cloud.CustomersTest.API.Helpers;
+using Bespoke.Cloud.CustomersTest.API.Models;
 using Bespoke.Cloud.CustomersTest.Business.Interfaces;
 using Bespoke.Cloud.CustomersTest.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
+using System.Collections.Generic;
 
 namespace Bespoke.Cloud.CustomersTest.API.Controllers
 {
@@ -29,8 +32,9 @@ namespace Bespoke.Cloud.CustomersTest.API.Controllers
         public IActionResult GetCustomers()
         {
             var customers = _customerManager.GetCustomers("");
+            var customersToReturn = Mapper.Map<IEnumerable<CustomerListDto>>(customers);
 
-            return Ok(customers);
+            return Ok(customersToReturn);
         }
 
         /// <summary>
@@ -42,8 +46,9 @@ namespace Bespoke.Cloud.CustomersTest.API.Controllers
         public IActionResult GetCustomers(string searchText = "")
         {
             var customers = _customerManager.GetCustomers(searchText);
+            var customersToReturn = Mapper.Map<IEnumerable<CustomerListDto>>(customers);
 
-            return Ok(customers);
+            return Ok(customersToReturn);
         }
 
         /// <summary>

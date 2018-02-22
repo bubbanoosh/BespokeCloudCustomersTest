@@ -8,13 +8,13 @@ module.exports = {
         filename: 'bundle.js'
     },
     module: {
-        loaders: [
+        rules: [
             {
                 test: /\.jsx?$/,
                 loader: 'babel-loader',
                 exclude: /(node_modules)/,
                 query: {
-                    presets: ['react', 'es2015', 'stage-3', 'latest']
+                    presets: ['react', 'es2015', 'stage-1']
                 }
             },
             {
@@ -37,8 +37,8 @@ module.exports = {
     })],
     devtool: 'cheap-module-eval-source-map',
     devServer: {
-      historyApiFallback: true,
-      contentBase: path.join(__dirname, 'public'),
-      watchContentBase: true
+        historyApiFallback: true,
+        contentBase: path.join(__dirname, 'public'),
+        watchContentBase: true
     }
 };

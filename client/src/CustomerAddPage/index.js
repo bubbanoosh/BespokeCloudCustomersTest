@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux'
+import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { customerActions } from '../_actions/customer.actions';
 
-import CustomerForm from '../_components/CustomerForm'
+import CustomerForm from '../_components/CustomerForm';
 
 class CustomerAddPage extends Component {
 

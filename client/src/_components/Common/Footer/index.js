@@ -1,5 +1,5 @@
 import React from 'react';
-import { appConfig } from '../../../_helpers/'
+import { appConfig } from '../../../_helpers/';
 
 const styles = {
     footer: {
@@ -8,9 +8,9 @@ const styles = {
         backgroundColor: '#f5f5f5',
         paddingTop: '1rem'
     }
-}
+};
 
-export const Footer = (props) => {
+export const Footer = () => {
     return (
         <div className="container">
             <div className="row">
@@ -24,4 +24,4 @@ export const Footer = (props) => {
             </div>
         </div>
     );
-}
+};

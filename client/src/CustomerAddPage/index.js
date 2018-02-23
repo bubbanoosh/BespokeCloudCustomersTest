@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
+
 import { customerActions } from '../_actions/customer.actions';
 
 import CustomerForm from '../_components/CustomerForm';
@@ -29,7 +31,7 @@ class CustomerAddPage extends Component {
                 [name]: value
             }
         });
-    }
+    };
 
     handleSubmit = (event) => {
         event.preventDefault();
@@ -39,7 +41,7 @@ class CustomerAddPage extends Component {
         if (customer.firstName && customer.lastName && customer.email) {
             dispatch(customerActions.addCustomer(customer));
         }
-    }
+    };
 
     render() {
 
@@ -55,18 +57,29 @@ class CustomerAddPage extends Component {
                     </ol>
                 </nav>
 
-                <CustomerForm customer={customer} loading={adding} operationText={'Add'} customerAction={customerActions.addCustomer} disabled={false} />
+                <CustomerForm
+                    customer={customer}
+                    loading={adding}
+                    operationText={'Add'}
+                    customerAction={customerActions.addCustomer}
+                    disabled={false}
+                />
 
             </div>
         );
     }
 }
 
+CustomerAddPage.propTypes = {
+    dispatch: PropTypes.func.isRequired,
+    adding: PropTypes.bool.isRequired,
+};
+
 function mapStateToProps(state) {
     const { adding } = state.customersState;
     return {
         adding
-    }
+    };
 }
 
-export default connect(mapStateToProps)(CustomerAddPage)
+export default connect(mapStateToProps)(CustomerAddPage);

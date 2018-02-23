@@ -29,9 +29,9 @@ function addCustomer(customer) {
             );
     };
 
-    function request(customer) { return { type: actionTypes.ADD_CUSTOMER_REQUEST, customer } }
-    function success(customer) { return { type: actionTypes.ADD_CUSTOMER_SUCCESS, customer } }
-    function failure(error) { return { type: actionTypes.ADD_CUSTOMER_FAILURE, error } }
+    function request(customer) { return { type: actionTypes.ADD_CUSTOMER_REQUEST, customer }; }
+    function success(customer) { return { type: actionTypes.ADD_CUSTOMER_SUCCESS, customer }; }
+    function failure(error) { return { type: actionTypes.ADD_CUSTOMER_FAILURE, error }; }
 }
 
 function getCustomer(id) {
@@ -45,9 +45,9 @@ function getCustomer(id) {
             );
     };
 
-    function request() { return { type: actionTypes.GET_CUSTOMER_REQUEST } }
-    function success(customer) { return { type: actionTypes.GET_CUSTOMER_SUCCESS, customer } }
-    function failure(error) { return { type: actionTypes.GET_CUSTOMER_FAILURE, error } }
+    function request() { return { type: actionTypes.GET_CUSTOMER_REQUEST }; }
+    function success(customer) { return { type: actionTypes.GET_CUSTOMER_SUCCESS, customer }; }
+    function failure(error) { return { type: actionTypes.GET_CUSTOMER_FAILURE, error }; }
 }
 
 function getCustomers(searchText) {
@@ -61,9 +61,9 @@ function getCustomers(searchText) {
             );
     };
 
-    function request() { return { type: actionTypes.GETALL_CUSTOMERS_REQUEST } }
-    function success(customers) { return { type: actionTypes.GETALL_CUSTOMERS_SUCCESS, customers } }
-    function failure(error) { return { type: actionTypes.GETALL_CUSTOMERS_FAILURE, error } }
+    function request() { return { type: actionTypes.GETALL_CUSTOMERS_REQUEST }; }
+    function success(customers) { return { type: actionTypes.GETALL_CUSTOMERS_SUCCESS, customers }; }
+    function failure(error) { return { type: actionTypes.GETALL_CUSTOMERS_FAILURE, error }; }
 }
 
 function removeCustomer(customer) {
@@ -84,9 +84,9 @@ function removeCustomer(customer) {
             );
     };
 
-    function request(id) { return { type: actionTypes.REMOVE_CUSTOMER_REQUEST, id } }
-    function success(id) { return { type: actionTypes.REMOVE_CUSTOMER_SUCCESS, id } }
-    function failure(id, error) { return { type: actionTypes.REMOVE_CUSTOMER_FAILURE, id, error } }
+    function request(id) { return { type: actionTypes.REMOVE_CUSTOMER_REQUEST, id }; }
+    function success(id) { return { type: actionTypes.REMOVE_CUSTOMER_SUCCESS, id }; }
+    function failure(id, error) { return { type: actionTypes.REMOVE_CUSTOMER_FAILURE, id, error }; }
 }
 
 function updateCustomer(customer) {
@@ -107,7 +107,7 @@ function updateCustomer(customer) {
             );
     };
 
-    function request(customer) { return { type: actionTypes.UPDATE_CUSTOMER_REQUEST, customer } }
-    function success(customer) { return { type: actionTypes.UPDATE_CUSTOMER_SUCCESS, customer } }
-    function failure(error) { return { type: actionTypes.UPDATE_CUSTOMER_FAILURE, error } }
+    function request(customer) { return { type: actionTypes.UPDATE_CUSTOMER_REQUEST, customer }; }
+    function success(customer) { return { type: actionTypes.UPDATE_CUSTOMER_SUCCESS, customer }; }
+    function failure(error) { return { type: actionTypes.UPDATE_CUSTOMER_FAILURE, error }; }
 }

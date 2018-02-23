@@ -1,5 +1,6 @@
-import React from 'react'
+import React from 'react';
 import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
 
 const CustomerItem = props => {
     return (
@@ -14,7 +15,15 @@ const CustomerItem = props => {
             </div>
             {props.customer.name}
         </li>
-    )
-}
+    );
+};
 
-export default CustomerItem
+CustomerItem.propTypes = {
+    customer: PropTypes.shape({
+        id: PropTypes.node,
+        name: PropTypes.node
+    }).isRequired,
+    customersState: PropTypes.object.isRequired,
+};
+
+export default CustomerItem;

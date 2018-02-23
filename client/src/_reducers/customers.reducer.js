@@ -9,7 +9,7 @@ const initialState = {
     error: '',
     loading: false,
     updating: false,
-}
+};
 
 export function customersState(state = initialState, action) {
     switch (action.type) {
@@ -77,6 +77,7 @@ export function customersState(state = initialState, action) {
                 customersData: state.customersData.map(customer => {
                     if (customer.id === action.id) {
                         // make copy of customer without 'deleting:true' property
+                        // eslint-disable-next-line no-unused-vars
                         const { deleting, ...customerCopy } = customer;
                         // return copy of customer with 'deleteError:[error]' property
                         return { ...customerCopy, deleteError: action.error };
@@ -105,6 +106,6 @@ export function customersState(state = initialState, action) {
             error: action.error 
         };
     default:
-            return state
+            return state;
     }
 }

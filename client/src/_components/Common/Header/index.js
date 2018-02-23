@@ -1,7 +1,7 @@
 import React from 'react';
-import { appConfig } from '../../../_helpers/'
+import { appConfig } from '../../../_helpers/';
 
-export const Header = (props) => {
+export const Header = () => {
     return (
         <div>
             <div className="jumbotron">
@@ -9,4 +9,4 @@ export const Header = (props) => {
             </div>
         </div>
     );
-}
+};

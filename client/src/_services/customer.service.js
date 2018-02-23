@@ -15,7 +15,8 @@ function addCustomer(customer) {
         body: JSON.stringify(customer)
     };
 
-    return fetch(`${appConfig.API_ROOT_URL}/customers`, requestOptions).then(handleResponse, handleError);
+    return fetch(`${appConfig.API_ROOT_URL}/customers`, requestOptions)
+        .then(handleResponse, handleError);
 }
 
 function getCustomer(id) {
@@ -23,7 +24,8 @@ function getCustomer(id) {
         method: 'GET'
     };
 
-    return fetch(`${appConfig.API_ROOT_URL}/customers/${id}`, requestOptions).then(handleResponse, handleError);
+    return fetch(`${appConfig.API_ROOT_URL}/customers/${id}`, requestOptions)
+        .then(handleResponse, handleError);
 }
 
 function getCustomers(searchText) {
@@ -31,7 +33,8 @@ function getCustomers(searchText) {
         method: 'GET'
     };
 
-    return fetch(`${appConfig.API_ROOT_URL}/customers/list/${searchText}`, requestOptions).then(handleResponse, handleError);
+    return fetch(`${appConfig.API_ROOT_URL}/customers/list/${searchText}`, requestOptions)
+        .then(handleResponse, handleError);
 }
 
 function removeCustomer(id) {
@@ -39,17 +42,19 @@ function removeCustomer(id) {
         method: 'DELETE'
     };
 
-    return fetch(`${appConfig.API_ROOT_URL}/customers/${id}`, requestOptions).then(handleResponse, handleError);
+    return fetch(`${appConfig.API_ROOT_URL}/customers/${id}`, requestOptions)
+        .then(handleResponse, handleError);
 }
 
 function updateCustomer(customer) {
     const requestOptions = {
         method: 'PUT',
-        headers: {'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(customer)
     };
 
-    return fetch(`${appConfig.API_ROOT_URL}/customers/${customer.id}`, requestOptions).then(handleResponse, handleError);
+    return fetch(`${appConfig.API_ROOT_URL}/customers/${customer.id}`, requestOptions)
+        .then(handleResponse, handleError);
 }
 
 function handleResponse(response) {

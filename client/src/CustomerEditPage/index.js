@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux'
+import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { customerActions } from '../_actions/customer.actions';
 
 import PropTypes from 'prop-types';
 
-import CustomerForm from '../_components/CustomerForm'
+import CustomerForm from '../_components/CustomerForm';
 
 class CustomerEditPage extends Component {
-    
+
     constructor(props) {
         super(props);
 
@@ -29,8 +29,8 @@ class CustomerEditPage extends Component {
 
     render() {
 
-        const { customersState } = this.props
-        const { updating, customer } = customersState
+        const { customersState } = this.props;
+        const { updating, customer } = customersState;
 
         return (
             <div>
@@ -41,21 +41,34 @@ class CustomerEditPage extends Component {
                     </ol>
                 </nav>
 
-                {customer && <CustomerForm customer={customer} loading={updating} operationText={'Edit'} customerAction={customerActions.updateCustomer} disabled={false} />}
+                {customer &&
+                    <CustomerForm
+                        customer={customer}
+                        loading={updating}
+                        operationText={'Edit'}
+                        customerAction={customerActions.updateCustomer}
+                        disabled={false}
+                    />}
             </div>
         );
     }
 }
 
 CustomerEditPage.propTypes = {
-    customersState: PropTypes.object.isRequired
+    dispatch: PropTypes.func.isRequired,
+    match: PropTypes.shape({
+        params: PropTypes.shape({
+            id: PropTypes.node,
+        }).isRequired,
+    }).isRequired,
+    customersState: PropTypes.object.isRequired,
 };
 
 function mapStateToProps(state) {
     const { customersState } = state;
     return {
         customersState
-    }
+    };
 }
 
-export default connect(mapStateToProps)(CustomerEditPage)
+export default connect(mapStateToProps)(CustomerEditPage);

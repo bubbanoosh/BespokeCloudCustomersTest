@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux'
+import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { customerActions } from '../_actions/customer.actions';
 
 import PropTypes from 'prop-types';
 
-import CustomerForm from '../_components/CustomerForm'
+import CustomerForm from '../_components/CustomerForm';
 
 class CustomerDeletePage extends Component {
 
@@ -30,8 +30,8 @@ class CustomerDeletePage extends Component {
 
     render() {
 
-        const { customersState } = this.props
-        const { deleting, customer } = customersState
+        const { customersState } = this.props;
+        const { deleting, customer } = customersState;
 
         return (
             <div>
@@ -42,22 +42,35 @@ class CustomerDeletePage extends Component {
                     </ol>
                 </nav>
 
-                {customer && <CustomerForm customer={customer} loading={deleting} operationText={'Delete'} customerAction={customerActions.removeCustomer} disabled={true} />}
-                
+                {customer &&
+                    <CustomerForm
+                        customer={customer}
+                        loading={deleting}
+                        operationText={'Delete'}
+                        customerAction={customerActions.removeCustomer}
+                        disabled={true}
+                    />}
+
             </div>
         );
     }
 }
 
 CustomerDeletePage.propTypes = {
-    customersState: PropTypes.object.isRequired
+    dispatch: PropTypes.func.isRequired,
+    customersState: PropTypes.object.isRequired,
+    match: PropTypes.shape({
+        params: PropTypes.shape({
+            id: PropTypes.node,
+        }).isRequired,
+    }).isRequired
 };
 
 function mapStateToProps(state) {
     const { customersState } = state;
     return {
         customersState
-    }
+    };
 }
 
-export default connect(mapStateToProps)(CustomerDeletePage)
+export default connect(mapStateToProps)(CustomerDeletePage);

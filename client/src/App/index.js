@@ -1,21 +1,23 @@
 import React from 'react';
 import { Route } from 'react-router-dom';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 
 import { alertActions } from '../_actions';
 import { history } from '../_helpers';
 
-import { Header, Footer } from '../_components/Common'
-import HomePage from '../HomePage'
-import CustomerEditPage from '../CustomerEditPage'
-import CustomerDeletePage from '../CustomerDeletePage'
-import CustomerAddPage from '../CustomerAddPage'
+import { Header, Footer } from '../_components/Common';
+import HomePage from '../HomePage';
+import CustomerEditPage from '../CustomerEditPage';
+import CustomerDeletePage from '../CustomerDeletePage';
+import CustomerAddPage from '../CustomerAddPage';
 
 class App extends React.Component {
     constructor(props) {
         super(props);
 
         const { dispatch } = this.props;
+        // eslint-disable-next-line no-unused-vars
         history.listen((location, action) => {
             // clear alert on location change
             dispatch(alertActions.clear());
@@ -51,6 +53,11 @@ class App extends React.Component {
         );
     }
 }
+
+App.propTypes = {
+    dispatch: PropTypes.func.isRequired,
+    alert: PropTypes.object.isRequired,
+};
 
 function mapStateToProps(state) {
     const { alert } = state;

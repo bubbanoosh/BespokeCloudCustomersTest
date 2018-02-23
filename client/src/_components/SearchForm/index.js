@@ -1,6 +1,7 @@
-import React, { Component } from 'react'
-import { connect } from 'react-redux'
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
 
 class SearchForm extends Component {
 
@@ -14,14 +15,14 @@ class SearchForm extends Component {
     }
 
     handleChange = (event) => {
+        // eslint-disable-next-line no-unused-vars
         const { name, value } = event.target;
-        const { searchText } = this.state;
         this.setState({
             searchText: value,
             disabledButton: (value.length > 0 ? '' : 'disabled')
         });
 
-    }
+    };
 
     handleSubmit = (event) => {
         event.preventDefault();
@@ -30,7 +31,7 @@ class SearchForm extends Component {
         if (searchText !== null & searchText.length > 0) {
             this.props.dispatch(this.props.customerAction(searchText));
         }
-    }
+    };
 
     clearSearch = (event) => {
         event.preventDefault();
@@ -39,11 +40,11 @@ class SearchForm extends Component {
             disabledButton: 'disabled'
         });
         this.props.dispatch(this.props.customerAction(''));
-    }
+    };
 
     render() {
 
-        const { searchText, disabledButton } = this.state
+        const { searchText, disabledButton } = this.state;
 
         return (
             <form name="form" className="form-inline" onSubmit={this.handleSubmit}>
@@ -57,8 +58,19 @@ class SearchForm extends Component {
                     Clear Search
                 </Link>
             </form>
-        )
+        );
     }
 }
 
-export default connect()(SearchForm)
+SearchForm.propTypes = {
+    dispatch: PropTypes.func.isRequired,
+    customerAction: PropTypes.object.isRequired,
+    name: PropTypes.string.isRequired,
+    searchText: PropTypes.string.isRequired,
+};
+
+SearchForm.defaultProps = {
+    searchText: '',
+};
+
+export default connect()(SearchForm);

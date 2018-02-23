@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux'
+import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { customerActions } from '../_actions/customer.actions';
 
-import { Loader } from '../_components/Common'
-import CustomerList from '../_components/CustomerList'
-import SearchForm from '../_components/SearchForm'
+import { Loader } from '../_components/Common';
+import CustomerList from '../_components/CustomerList';
+import SearchForm from '../_components/SearchForm';
 
 import PropTypes from 'prop-types';
 
@@ -17,8 +17,8 @@ class HomePage extends Component {
 
     render() {
 
-        const { customersState } = this.props
-        const { loading, customersData } = customersState
+        const { customersState } = this.props;
+        const { loading, customersData } = customersState;
 
         return (
             <div>
@@ -53,6 +53,7 @@ class HomePage extends Component {
 }
 
 HomePage.propTypes = {
+    dispatch: PropTypes.func.isRequired,
     customersState: PropTypes.object.isRequired,
 };
 
@@ -60,7 +61,7 @@ function mapStateToProps(state) {
     const { customersState } = state;
     return {
         customersState
-    }
+    };
 }
 
-export default connect(mapStateToProps)(HomePage)
+export default connect(mapStateToProps)(HomePage);

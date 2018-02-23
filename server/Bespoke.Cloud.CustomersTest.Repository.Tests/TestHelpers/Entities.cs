@@ -20,7 +20,7 @@ namespace Bespoke.Cloud.CustomersTest.Repository.Tests.TestHelpers
             };
         }
 
-        public static List<Customer> GetTestCustomersList()
+        public static IList<Customer> GetTestCustomersList()
         {
             return new List<Customer> {
                 new Customer
@@ -47,7 +47,7 @@ namespace Bespoke.Cloud.CustomersTest.Repository.Tests.TestHelpers
             };
         }
 
-        public static List<CustomerListDto> GetTestCustomersListDto()
+        public static IList<CustomerListDto> GetTestCustomersListDto()
         {
             return new List<CustomerListDto> {
                 new CustomerListDto

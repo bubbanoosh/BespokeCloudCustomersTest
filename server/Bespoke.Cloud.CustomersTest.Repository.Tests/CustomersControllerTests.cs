@@ -10,13 +10,46 @@ using Microsoft.AspNetCore.Mvc;
 using Bespoke.Cloud.CustomersTest.API.Helpers;
 using Bespoke.Cloud.CustomersTest.API.Models;
 using System.Collections.Generic;
+using AutoMapper;
+using Bespoke.Cloud.CustomersTest.Repository.Tests.EqualityComparers;
 
 namespace Bespoke.Cloud.CustomersTest.Repository.Tests
 {
     public class CustomersControllerTests
     {
+        [Fact(DisplayName = "CustomersController: GetCustomersReturnsCustomers")]
+        public void GetCustomersReturnsCustomers()
+        {
+            // Arrange
+            IList<Customer> moqCustomersList = TestHelpers.Entities.GetTestCustomersList();
+            IList<CustomerListDto> moqCustomerListDto = TestHelpers.Entities.GetTestCustomersListDto();
 
-        [Fact(DisplayName = "Successfully get a customer by id")]
+            // -- AutoMapper Config for TEST
+            Mapper.Initialize(cfg =>
+            {
+                cfg.CreateMap<Entities.Customer, API.Models.CustomerListDto>()
+                    .ForMember(dest => dest.Name, opt => opt.MapFrom(src =>
+                        $"{src.FirstName} {src.LastName}"));
+
+            });
+            Mapper.AssertConfigurationIsValid();
+
+            var mockCustomerManager = new Mock<ICustomerManager>();
+            mockCustomerManager.Setup(x => x.GetCustomers("")).Returns(moqCustomersList);
+            var mockILogger = new Mock<ILogger<CustomersController>>();
+
+            var customerControllerTest = new CustomersController(mockCustomerManager.Object, mockILogger.Object);
+
+            // Act
+            IActionResult result = customerControllerTest.GetCustomers(string.Empty);
+            var okResult = Assert.IsType<OkObjectResult>(result);
+
+            // Assert
+            var customersEqualityComparer = new CustomersEqualityComparer();
+            Assert.Equal(moqCustomerListDto, (IList<CustomerListDto>)okResult.Value, customersEqualityComparer);
+        }
+
+        [Fact(DisplayName = "CustomersController: GetCustomerById Returns A Customer")]
         public void GetCustomerByIdReturnsACustomer()
         {
             // Arrange
@@ -38,7 +71,7 @@ namespace Bespoke.Cloud.CustomersTest.Repository.Tests
             Assert.Equal(moqCustomer, okResult.Value);
         }
 
-        [Fact(DisplayName = "Return NotFound() when Customer Id does not exist")]
+        [Fact(DisplayName = "CustomersController: GetCustomerById Returns NotFound")]
         public void GetCustomerByIdReturnsNotFound()
         {
             // Arrange
@@ -57,31 +90,7 @@ namespace Bespoke.Cloud.CustomersTest.Repository.Tests
             Assert.IsType<NotFoundObjectResult>(result);
         }
 
-
-        [Fact(DisplayName = "GetCustomers() returns a list of Customers")]
-        public void GetCustomersReturnsCustomers()
-        {
-            // Arrange
-            List<Customer> moqCustomersList = TestHelpers.Entities.GetTestCustomersList();
-
-            var mockCustomerManager = new Mock<ICustomerManager>();
-            mockCustomerManager.Setup(x => x.GetCustomers("")).Returns(moqCustomersList);
-            var mockILogger = new Mock<ILogger<CustomersController>>();
-
-            var customerControllerTest = new CustomersController(mockCustomerManager.Object, mockILogger.Object);
-
-            List<CustomerListDto> moqCustomerListDto = TestHelpers.Entities.GetTestCustomersListDto();
-
-            // Act
-            IActionResult result = customerControllerTest.GetCustomers(string.Empty);
-            var okResult = Assert.IsType<OkObjectResult>(result);
-
-            // Assert
-            Assert.Equal(moqCustomerListDto, okResult.Value);
-        }
-
-
-        [Fact(DisplayName = "Post() fails with BadRequest() when receiving a null Customer")]
+        [Fact(DisplayName = "CustomersController: Post Fails With BadRequest receiving a null Customer")]
         public void PostFailsWithBadRequest()
         {
             // Arrange
@@ -100,7 +109,7 @@ namespace Bespoke.Cloud.CustomersTest.Repository.Tests
             Assert.IsType<BadRequestResult>(result);
         }
 
-        [Fact(DisplayName = "Post() fails with UnprocessableEntityObjectResult() 409 when already exists")]
+        [Fact(DisplayName = "CustomersController: Post Fails With UnprocessableEntityObjectResult When Customer Exists (409)")]
         public void PostFailsWithUnprocessableEntityObjectResultWhenCustomerExists()
         {
             // Arrange
@@ -125,8 +134,8 @@ namespace Bespoke.Cloud.CustomersTest.Repository.Tests
             Assert.Equal(returnResult, unprocessableEntityResult.Value);
         }
 
-        [Fact(DisplayName = "Post() succeeds with CreatedAtRoute()")]
-        public void PostSucceeds()
+        [Fact(DisplayName = "CustomersController: Post Succeeds With CreatedAtRoute ")]
+        public void PostSucceedsWithCreatedAtRoute()
         {
             // Arrange
             Customer moqCustomer = TestHelpers.Entities.GetTestCustomer();

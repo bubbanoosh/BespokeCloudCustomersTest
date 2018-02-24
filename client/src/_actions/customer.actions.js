@@ -57,7 +57,10 @@ function getCustomers(searchText) {
         customerService.getCustomers(searchText)
             .then(
                 customers => dispatch(success(customers)),
-                error => dispatch(failure(error))
+                error => {
+                    dispatch(failure(error)),
+                    dispatch(alertActions.error(error));
+                }
             );
     };
 

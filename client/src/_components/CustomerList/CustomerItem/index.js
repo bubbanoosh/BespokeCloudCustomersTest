@@ -26,4 +26,8 @@ CustomerItem.propTypes = {
     customersState: PropTypes.object.isRequired,
 };
 
+CustomerItem.defaultProps = {
+    customersState: {},
+};
+
 export default CustomerItem;

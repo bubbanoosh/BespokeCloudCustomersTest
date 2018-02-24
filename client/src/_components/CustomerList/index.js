@@ -30,7 +30,7 @@ class CustomerList extends Component {
 }
 
 CustomerList.propTypes = {
-    customersData: PropTypes.object.isRequired,
+    customersData: PropTypes.array.isRequired,
 };
 
 export default CustomerList;

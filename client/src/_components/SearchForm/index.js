@@ -64,13 +64,14 @@ class SearchForm extends Component {
 
 SearchForm.propTypes = {
     dispatch: PropTypes.func.isRequired,
-    customerAction: PropTypes.object.isRequired,
+    customerAction: PropTypes.func.isRequired,
     name: PropTypes.string.isRequired,
     searchText: PropTypes.string.isRequired,
 };
 
 SearchForm.defaultProps = {
     searchText: '',
+    name: '',
 };
 
 export default connect()(SearchForm);

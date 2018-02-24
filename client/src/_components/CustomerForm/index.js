@@ -112,7 +112,7 @@ CustomerForm.propTypes = {
     customer: PropTypes.object.isRequired,
     loading: PropTypes.bool.isRequired,
     operationText: PropTypes.string.isRequired,
-    customerAction: PropTypes.object.isRequired,
+    customerAction: PropTypes.func.isRequired,
     disabled: PropTypes.bool.isRequired,
 };
 

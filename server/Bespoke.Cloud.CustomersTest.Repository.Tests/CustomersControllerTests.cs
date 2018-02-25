@@ -37,8 +37,9 @@ namespace Bespoke.Cloud.CustomersTest.Repository.Tests
             var mockCustomerManager = new Mock<ICustomerManager>();
             mockCustomerManager.Setup(x => x.GetCustomers("")).Returns(moqCustomersList);
             var mockILogger = new Mock<ILogger<CustomersController>>();
+            var mockIMapper = new Mock<IMapper>();
 
-            var customerControllerTest = new CustomersController(mockCustomerManager.Object, mockILogger.Object);
+            var customerControllerTest = new CustomersController(mockCustomerManager.Object, mockILogger.Object, mockIMapper.Object);
 
             // Act
             IActionResult result = customerControllerTest.GetCustomers(string.Empty);
@@ -59,8 +60,9 @@ namespace Bespoke.Cloud.CustomersTest.Repository.Tests
             var mockCustomerManager = new Mock<ICustomerManager>();
             mockCustomerManager.Setup(x => x.GetCustomerById(customerId)).Returns(moqCustomer);
             var mockILogger = new Mock<ILogger<CustomersController>>();
+            var mockIMapper = new Mock<IMapper>();
 
-            var customerControllerTest = new CustomersController(mockCustomerManager.Object, mockILogger.Object);
+            var customerControllerTest = new CustomersController(mockCustomerManager.Object, mockILogger.Object, mockIMapper.Object);
             moqCustomer.Id = customerId;
 
             // Act
@@ -80,8 +82,9 @@ namespace Bespoke.Cloud.CustomersTest.Repository.Tests
             var mockCustomerManager = new Mock<ICustomerManager>();
             mockCustomerManager.Setup(x => x.GetCustomerById(customerId)).Returns((Customer)null);
             var mockILogger = new Mock<ILogger<CustomersController>>();
+            var mockIMapper = new Mock<IMapper>();
 
-            var customerControllerTest = new CustomersController(mockCustomerManager.Object, mockILogger.Object);
+            var customerControllerTest = new CustomersController(mockCustomerManager.Object, mockILogger.Object, mockIMapper.Object);
 
             // Act
             IActionResult result = customerControllerTest.Get(customerId);
@@ -99,8 +102,9 @@ namespace Bespoke.Cloud.CustomersTest.Repository.Tests
             var mockCustomerManager = new Mock<ICustomerManager>();
             mockCustomerManager.Setup(x => x.AddCustomer(moqCustomer)).Returns(null);
             var mockILogger = new Mock<ILogger<CustomersController>>();
+            var mockIMapper = new Mock<IMapper>();
 
-            var customerControllerTest = new CustomersController(mockCustomerManager.Object, mockILogger.Object);
+            var customerControllerTest = new CustomersController(mockCustomerManager.Object, mockILogger.Object, mockIMapper.Object);
 
             // Act
             IActionResult result = customerControllerTest.Post(moqCustomer);
@@ -119,8 +123,9 @@ namespace Bespoke.Cloud.CustomersTest.Repository.Tests
             var mockCustomerManager = new Mock<ICustomerManager>();
             mockCustomerManager.Setup(x => x.AddCustomer(moqCustomer)).Returns(customerIdReturnZero);
             var mockILogger = new Mock<ILogger<CustomersController>>();
+            var mockIMapper = new Mock<IMapper>();
 
-            var customerControllerTest = new CustomersController(mockCustomerManager.Object, mockILogger.Object);
+            var customerControllerTest = new CustomersController(mockCustomerManager.Object, mockILogger.Object, mockIMapper.Object);
 
             customerControllerTest.ModelState.AddModelError(nameof(Customer),
                     "Oops, Customer already exists!");
@@ -145,8 +150,9 @@ namespace Bespoke.Cloud.CustomersTest.Repository.Tests
             var mockCustomerManager = new Mock<ICustomerManager>();
             mockCustomerManager.Setup(x => x.AddCustomer(moqCustomer)).Returns(newCustomerId);
             var mockILogger = new Mock<ILogger<CustomersController>>();
+            var mockIMapper = new Mock<IMapper>();
 
-            var customerControllerTest = new CustomersController(mockCustomerManager.Object, mockILogger.Object);
+            var customerControllerTest = new CustomersController(mockCustomerManager.Object, mockILogger.Object, mockIMapper.Object);
             moqCustomer.Id = newCustomerId;
 
             // Act

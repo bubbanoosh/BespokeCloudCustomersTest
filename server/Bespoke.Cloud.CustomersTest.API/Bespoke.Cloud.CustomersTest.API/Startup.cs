@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Bespoke.Cloud.CustomersTest.API;
+using AutoMapper;
 
 namespace Bespoke.Cloud.CustomersTest
 {
@@ -36,6 +36,7 @@ namespace Bespoke.Cloud.CustomersTest
                 // (^_^): XML INPUT formatter too
                 setupAction.InputFormatters.Add(new XmlDataContractSerializerInputFormatter());
             });
+            services.AddAutoMapper();
 
             // register services
             services.AddScoped<ICustomerRepository, CustomerRepository>();
@@ -55,7 +56,7 @@ namespace Bespoke.Cloud.CustomersTest
             app.UseCors(x => x
                 .AllowAnyOrigin()
                 .AllowAnyMethod()
-                .AllowAnyHeader()
+                .AllowNTAnyHeader()
                 .AllowCredentials());
 
             if (env.IsDevelopment())
@@ -86,18 +87,6 @@ namespace Bespoke.Cloud.CustomersTest
                     });
                 });
             }
-
-            // (^_^): Map DTOs
-            AutoMapper.Mapper.Initialize(cfg =>
-            {
-                cfg.CreateMap<Entities.Customer, API.Models.CustomerListDto>()
-                    .ForMember(dest => dest.Name, opt => opt.MapFrom(src =>
-                        $"{src.FirstName} {src.LastName}"));
-
-            });
-
-
-
 
             app.UseMvc();
         }

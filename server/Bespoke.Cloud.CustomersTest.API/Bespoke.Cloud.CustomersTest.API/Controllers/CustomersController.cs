@@ -16,12 +16,15 @@ namespace Bespoke.Cloud.CustomersTest.API.Controllers
     {
         private ILogger<CustomersController> _logger;
         private ICustomerManager _customerManager;
+        private IMapper _mapper;
 
         public CustomersController(ICustomerManager customerManger,
-            ILogger<CustomersController> logger)
+            ILogger<CustomersController> logger,
+            IMapper mapper)
         {
             _customerManager = customerManger;
             _logger = logger;
+            _mapper = mapper;
         }
 
         /// <summary>

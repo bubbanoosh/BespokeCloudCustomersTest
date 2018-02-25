@@ -96,7 +96,7 @@ export function customersState(state = initialState, action) {
             return {
                 ...state,
                 customer: action.customer,
-                updating: true
+                updating: false
             };
         case actionTypes.UPDATE_CUSTOMER_FAILURE:
         return { 

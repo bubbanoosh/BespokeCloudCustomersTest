@@ -6,8 +6,10 @@ import PropTypes from 'prop-types';
 import { alertActions } from '../_actions';
 import { history } from '../_helpers';
 
+import { PrivateRoute } from '../_components/PrivateRoute';
 import { Header, Footer } from '../_components/Common';
 import { HomePage } from '../HomePage';
+import { LoginPage } from '../LoginPage';
 import { CustomerEditPage } from '../CustomerEditPage';
 import { CustomerDeletePage } from '../CustomerDeletePage';
 import { CustomerAddPage } from '../CustomerAddPage';
@@ -40,7 +42,8 @@ class App extends React.Component {
                                         {alert.message}
                                     </div>
                                 }
-                                <Route exact path="/" component={HomePage} />
+                                <PrivateRoute exact path="/" component={HomePage} />
+                                <Route path="/login" component={LoginPage} />
                                 <Route exact path="/customer/add" component={CustomerAddPage} />
                                 <Route exact path="/customer/edit/:id" component={CustomerEditPage} />
                                 <Route exact path="/customer/delete/:id" component={CustomerDeletePage} />

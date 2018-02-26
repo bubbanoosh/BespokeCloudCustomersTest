@@ -118,4 +118,9 @@ CustomerForm.propTypes = {
     disabled: PropTypes.bool.isRequired,
 };
 
-export default connect()(CustomerForm);
+CustomerForm.defaultProps = {
+    loading: false,
+};
+
+const connectedCustomerForm = connect()(CustomerForm);
+export { connectedCustomerForm as CustomerForm };

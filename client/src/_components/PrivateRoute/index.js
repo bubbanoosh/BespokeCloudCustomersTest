@@ -8,9 +8,9 @@ export const PrivateRoute = ({ component: Component, ...rest }) => (
             ? <Component {...props} />
             : <Redirect to={{ pathname: '/login', state: { from: props.location } }} />
     )} />
-)
+);
 
 PrivateRoute.propTypes = {
     component: PropTypes.object.isRequired,
     location: PropTypes.object.isRequired,
-}
+};

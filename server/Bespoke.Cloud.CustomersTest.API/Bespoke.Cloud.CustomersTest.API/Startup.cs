@@ -56,7 +56,7 @@ namespace Bespoke.Cloud.CustomersTest
             app.UseCors(x => x
                 .AllowAnyOrigin()
                 .AllowAnyMethod()
-                .AllowNTAnyHeader()
+                .AllowAnyHeader()
                 .AllowCredentials());
 
             if (env.IsDevelopment())

@@ -1,72 +1,19 @@
-import { actionTypes as actionTypes } from '../_constants';
-import { userService } from '../_services';
+import { userActionTypes as actionTypes } from '../_constants';
+import { userService as service } from '../_services';
 import { alertActions } from './';
 import { history } from '../_helpers';
 
 export const userActions = {
-    login,
-    logout,
-    register,
     getUsers,
     removeUser,
     updateUser,
 };
 
-function login(username, password) {
-    return dispatch => {
-        dispatch(request({ username }));
-
-        userService.login(username, password)
-            .then(
-                user => { 
-                    dispatch(success(user));
-                    history.push('/');
-                },
-                error => {
-                    dispatch(failure(error));
-                    dispatch(alertActions.error(error));
-                }
-            );
-    };
-
-    function request(user) { return { type: actionTypes.LOGIN_REQUEST, user }; }
-    function success(user) { return { type: actionTypes.LOGIN_SUCCESS, user }; }
-    function failure(error) { return { type: actionTypes.LOGIN_FAILURE, error }; }
-}
-
-function logout() {
-    userService.logout();
-    return { type: actionTypes.LOGOUT };
-}
-
-function register(user) {
-    return dispatch => {
-        dispatch(request(user));
-
-        userService.register(user)
-            .then(
-                () => { 
-                    dispatch(success());
-                    history.push('/login');
-                    dispatch(alertActions.success('Registration successful'));
-                },
-                error => {
-                    dispatch(failure(error));
-                    dispatch(alertActions.error(error));
-                }
-            );
-    };
-
-    function request(user) { return { type: actionTypes.REGISTER_REQUEST, user }; }
-    function success(user) { return { type: actionTypes.REGISTER_SUCCESS, user }; }
-    function failure(error) { return { type: actionTypes.REGISTER_FAILURE, error }; }
-}
-
 function getUsers() {
     return dispatch => {
         dispatch(request());
 
-        userService.getUsers()
+        service.getUsers()
             .then(
                 users => dispatch(success(users)),
                 error => dispatch(failure(error))
@@ -82,7 +29,7 @@ function removeUser(user) {
     return dispatch => {
         dispatch(request(user.id));
 
-        userService.removeUser(user.id)
+        service.removeUser(user.id)
             .then(
                 () => { 
                     dispatch(success(user.id));
@@ -105,7 +52,7 @@ function updateUser(id) {
     return dispatch => {
         dispatch(request(id));
 
-        userService.updateUser(id)
+        service.updateUser(id)
             .then(
                 () => { 
                     dispatch(success());

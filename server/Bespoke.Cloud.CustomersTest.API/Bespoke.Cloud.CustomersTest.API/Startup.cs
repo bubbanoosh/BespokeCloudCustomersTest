@@ -41,6 +41,8 @@ namespace Bespoke.Cloud.CustomersTest
             // register services
             services.AddScoped<ICustomerRepository, CustomerRepository>();
             services.AddScoped<ICustomerManager, CustomerManager>();
+            services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IUserManager, UserManager>();
 
             services.AddSingleton(_ => Configuration);
         }

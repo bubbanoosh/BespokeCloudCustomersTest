@@ -9,6 +9,9 @@ namespace Bespoke.Cloud.CustomersTest.API.Helpers
             CreateMap<Entities.Customer, Models.CustomerListDto>()
             .ForMember(dest => dest.Name, opt => opt.MapFrom(src =>
                 $"{src.FirstName} {src.LastName}"));
+
+            CreateMap<Entities.User, Models.UserDto>();
+            CreateMap<Models.UserDto, Entities.User>();
         }
     }
 }

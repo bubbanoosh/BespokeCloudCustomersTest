@@ -1,6 +1,5 @@
 import { customerActionTypes as actionTypes } from '../_constants';
 
-
 const initialState = {
     adding: false,
     customer: {},

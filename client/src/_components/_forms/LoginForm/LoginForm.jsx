@@ -20,7 +20,7 @@ class LoginForm extends Component {
     handleChange = (event) => {
         const { name, value } = event.target;
         this.setState({ [name]: value });
-    }
+    };
 
     handleSubmit = (event) => {
         event.preventDefault();
@@ -29,9 +29,9 @@ class LoginForm extends Component {
         const { username, pwd } = this.state;
         const { dispatch } = this.props;
         if (username && pwd) {
-            dispatch(this.props.userActions.login(username, pwd));
+            dispatch(this.props.login(username, pwd));
         }
-    }
+    };
 
     render() {
 
@@ -51,7 +51,7 @@ class LoginForm extends Component {
                                     name="username"
                                     id="username"
                                     placeholder="name@domain.com"
-                                    value=""
+                                    value={this.state.username}
                                     onChange={this.handleChange}
                                 />
                             </div>
@@ -62,7 +62,7 @@ class LoginForm extends Component {
                                     name="pwd"
                                     id="pwd"
                                     placeholder="Password"
-                                    value=""
+                                    value={this.state.pwd}
                                     onChange={this.handleChange}
                                 />
                             </div>
@@ -82,7 +82,7 @@ LoginForm.propTypes = {
     dispatch: PropTypes.func.isRequired,
     loggingIn: PropTypes.bool.isRequired,
     operationText: PropTypes.string.isRequired,
-    userActions: PropTypes.func.isRequired,
+    login: PropTypes.func.isRequired,
 };
 
 LoginForm.defaultProps = {

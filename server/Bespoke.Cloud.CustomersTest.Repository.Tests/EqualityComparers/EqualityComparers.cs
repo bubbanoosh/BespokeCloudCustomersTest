@@ -1,4 +1,4 @@
-﻿using Bespoke.Cloud.CustomersTest.API.Models;
+﻿using Bespoke.Cloud.CustomersTest.API.Dtos;
 using System;
 using System.Collections.Generic;
 

@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using System.Threading.Tasks;
 using static System.Data.CommandType;
 
 namespace Bespoke.Cloud.CustomersTest.Repository
@@ -26,7 +27,7 @@ namespace Bespoke.Cloud.CustomersTest.Repository
         /// </summary>
         /// <param name="user"></param>
         /// <returns></returns>
-        public User Register(User user)
+        public async Task<User> Register(User user)
         {
             try
             {
@@ -40,7 +41,7 @@ namespace Bespoke.Cloud.CustomersTest.Repository
                     parameters.Add("@Email", user.Email);
                     parameters.Add("@PasswordHash", user.PasswordHash);
                     parameters.Add("@PasswordSalt", user.PasswordSalt);
-                    SqlMapper.Execute(connection, "Users_Register", param: parameters, commandType: StoredProcedure);
+                    await SqlMapper.ExecuteAsync(connection, "Users_Register", param: parameters, commandType: StoredProcedure);
 
                     int id = parameters.Get<int>("Id");
 
@@ -92,7 +93,7 @@ namespace Bespoke.Cloud.CustomersTest.Repository
         /// </summary>
         /// <param name="email"></param>
         /// <returns></returns>
-        public User GetUserByEmail(string email)
+        public async Task<User> GetUserByEmail(string email)
         {
             try
             {
@@ -100,7 +101,7 @@ namespace Bespoke.Cloud.CustomersTest.Repository
                 {
                     DynamicParameters parameters = new DynamicParameters();
                     parameters.Add("@Email", email);
-                    return SqlMapper.Query<User>(connection, "Users_GetUserByEmail", param: parameters, commandType: StoredProcedure).FirstOrDefault();
+                    return await SqlMapper.QueryFirstOrDefaultAsync<User>(connection, "Users_GetUserByUsername", param: parameters, commandType: StoredProcedure);
                 }
             }
             catch (Exception)

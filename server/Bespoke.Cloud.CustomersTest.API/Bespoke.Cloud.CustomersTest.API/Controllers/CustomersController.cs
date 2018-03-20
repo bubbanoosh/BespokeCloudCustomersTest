@@ -1,15 +1,17 @@
 ﻿using AutoMapper;
 using Bespoke.Cloud.CustomersTest.API.Helpers;
-using Bespoke.Cloud.CustomersTest.API.Models;
+using Bespoke.Cloud.CustomersTest.API.Dtos;
 using Bespoke.Cloud.CustomersTest.Business.Interfaces;
 using Bespoke.Cloud.CustomersTest.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Bespoke.Cloud.CustomersTest.API.Controllers
 {
+    [Authorize]
     [Produces("application/json")]
     [Route("api/Customers")]
     public class CustomersController : Controller
@@ -70,7 +72,8 @@ namespace Bespoke.Cloud.CustomersTest.API.Controllers
             }
             else
             {
-                return Ok(customer);
+                var customerDto = Mapper.Map<CustomerDetailDto>(customer);
+                return Ok(customerDto);
             }
         }
 

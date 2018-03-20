@@ -1,22 +1,35 @@
 using Bespoke.Cloud.CustomersTest.Entities;
 using Moq;
 using Xunit;
-using System;
-using Bespoke.Cloud.CustomersTest.Repository.Interfaces;
 using Bespoke.Cloud.CustomersTest.Business.Interfaces;
 using Bespoke.Cloud.CustomersTest.API.Controllers;
 using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Mvc;
 using Bespoke.Cloud.CustomersTest.API.Helpers;
-using Bespoke.Cloud.CustomersTest.API.Models;
+using Bespoke.Cloud.CustomersTest.API.Dtos;
 using System.Collections.Generic;
 using AutoMapper;
 using Bespoke.Cloud.CustomersTest.Repository.Tests.EqualityComparers;
+using Microsoft.AspNetCore.TestHost;
+using System.Net.Http;
+using Microsoft.Extensions.Configuration;
+using Microsoft.AspNetCore.Hosting;
+using System.IO;
+using FluentAssertions;
+using Bespoke.Cloud.CustomersTest.Repository.Tests.Fixtures;
 
 namespace Bespoke.Cloud.CustomersTest.Repository.Tests
 {
-    public class CustomersControllerTests
+    public class CustomersControllerTests : IClassFixture<CustomersFixture>
     {
+        CustomersFixture _customersFixture;
+
+        public CustomersControllerTests(CustomersFixture customersFixture)
+        {
+            _customersFixture = customersFixture;
+        }
+
+
         [Fact(DisplayName = "CustomersController: GetCustomersReturnsCustomers")]
         public void GetCustomersReturnsCustomers()
         {
@@ -24,15 +37,15 @@ namespace Bespoke.Cloud.CustomersTest.Repository.Tests
             IList<Customer> moqCustomersList = TestHelpers.Entities.GetTestCustomersList();
             IList<CustomerListDto> moqCustomerListDto = TestHelpers.Entities.GetTestCustomersListDto();
 
-            // -- AutoMapper Config for TEST
-            Mapper.Initialize(cfg =>
-            {
-                cfg.CreateMap<Entities.Customer, API.Models.CustomerListDto>()
-                    .ForMember(dest => dest.Name, opt => opt.MapFrom(src =>
-                        $"{src.FirstName} {src.LastName}"));
+            //// -- AutoMapper Config for TEST
+            //Mapper.Initialize(cfg =>
+            //{
+            //    cfg.CreateMap<Entities.Customer, API.Dtos.CustomerListDto>()
+            //        .ForMember(dest => dest.Name, opt => opt.MapFrom(src =>
+            //            $"{src.FirstName} {src.LastName}"));
 
-            });
-            Mapper.AssertConfigurationIsValid();
+            //});
+            //Mapper.AssertConfigurationIsValid();
 
             var mockCustomerManager = new Mock<ICustomerManager>();
             mockCustomerManager.Setup(x => x.GetCustomers("")).Returns(moqCustomersList);
@@ -55,22 +68,23 @@ namespace Bespoke.Cloud.CustomersTest.Repository.Tests
         {
             // Arrange
             Customer moqCustomer = TestHelpers.Entities.GetTestCustomer();
+            CustomerDetailDto moqCustomerDetailDto = TestHelpers.Entities.GetTestCustomerDetailDto();
             var customerId = 1;
 
             var mockCustomerManager = new Mock<ICustomerManager>();
-            mockCustomerManager.Setup(x => x.GetCustomerById(customerId)).Returns(moqCustomer);
+            mockCustomerManager.Setup(x => x.GetCustomerById(It.IsAny<int>())).Returns(moqCustomer);
             var mockILogger = new Mock<ILogger<CustomersController>>();
             var mockIMapper = new Mock<IMapper>();
 
             var customerControllerTest = new CustomersController(mockCustomerManager.Object, mockILogger.Object, mockIMapper.Object);
-            moqCustomer.Id = customerId;
+            //moqCustomer.Id = customerId;
 
             // Act
             IActionResult result = customerControllerTest.Get(customerId);
             var okResult = Assert.IsType<OkObjectResult>(result);
 
-            // Assert
-            Assert.Equal(moqCustomer, okResult.Value);
+            // Assert - FluentAssertions
+            moqCustomerDetailDto.Should().BeEquivalentTo(okResult.Value, options => options.ExcludingNestedObjects());
         }
 
         [Fact(DisplayName = "CustomersController: GetCustomerById Returns NotFound")]

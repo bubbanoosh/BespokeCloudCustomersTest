@@ -3,6 +3,7 @@ using Bespoke.Cloud.CustomersTest.Entities;
 using Bespoke.Cloud.CustomersTest.Repository.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Bespoke.Cloud.CustomersTest.Business
 {
@@ -21,12 +22,17 @@ namespace Bespoke.Cloud.CustomersTest.Business
         /// <param name="user"></param>
         /// <param name="password"></param>
         /// <returns></returns>
-        public User Register(User user, string password)
+        public async Task<User> Register(User user, string password)
         {
-            if (user == null || string.IsNullOrWhiteSpace(user.Email) || string.IsNullOrWhiteSpace(password))
-                return null;
+            if (user == null)
+                throw new ArgumentNullException("user");
 
-            if (GetUserByEmail(user.Email) != null)
+            if (string.IsNullOrWhiteSpace(user.Email) || string.IsNullOrWhiteSpace(password))
+                throw new ApplicationException($"Vital user information missing!");
+
+            var foundUser = await GetUserByEmail(user.Email);
+
+            if (foundUser != null)
                 throw new ApplicationException($"User {user.Email} Already exists!");
 
             // Generate the Password Hash & Salt into a Tuple
@@ -34,7 +40,7 @@ namespace Bespoke.Cloud.CustomersTest.Business
             user.PasswordHash = passwordHashTuple.h;
             user.PasswordSalt = passwordHashTuple.s;
 
-            return _userRepository.Register(user);
+            return await _userRepository.Register(user);
         }
 
         /// <summary>
@@ -62,12 +68,12 @@ namespace Bespoke.Cloud.CustomersTest.Business
         /// </summary>
         /// <param name="email"></param>
         /// <returns></returns>
-        public User GetUserByEmail(string email)
+        public async Task<User> GetUserByEmail(string email)
         {
             if (string.IsNullOrWhiteSpace(email))
                 throw new ApplicationException("Cannot get User. No email supplied?");
 
-            return _userRepository.GetUserByEmail(email);
+            return await _userRepository.GetUserByEmail(email);
         }
 
         /// <summary>
@@ -130,11 +136,23 @@ namespace Bespoke.Cloud.CustomersTest.Business
         /// <param name="username"></param>
         /// <param name="password"></param>
         /// <returns></returns>
-        public User Authenticate(string username, string password)
+        public async Task<User> Authenticate(string username, string password)
         {
-            var user = new User { Id = 1, FirstName = "Errol", LastName = "Willy", Email = "e@bubbanoosh.com.au" };
+            //var user = new User { Id = 1, FirstName = "Errol", LastName = "Willy", Email = "e@bubbanoosh.com.au" };
+            if (string.IsNullOrWhiteSpace(username) || string.IsNullOrWhiteSpace(password))
+                throw new ApplicationException("Username and password are required!");
 
+            var user = await GetUserByEmail(username);
 
+            // check if username exists
+            if (user == null)
+                return null;
+
+            // check if password is correct
+            if (!VerifyPasswordHash(password, user.PasswordHash, user.PasswordSalt))
+                return null;
+
+            // authentication successful
             return user;
         }
 

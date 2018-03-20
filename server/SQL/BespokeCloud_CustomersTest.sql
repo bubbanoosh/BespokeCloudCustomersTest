@@ -293,8 +293,8 @@ CREATE TABLE [dbo].[Users](
 	[FirstName][varchar](50) NOT NULL, 
 	[LastName][varchar](50) NOT NULL, 
 	[Email][varchar](100) NOT NULL,
-	[PasswordHash] VARBINARY  NOT NULL,
-	[PasswordSalt] VARBINARY NOT NULL,
+	[PasswordHash] VARBINARY(64)  NOT NULL,
+	[PasswordSalt] VARBINARY(128) NOT NULL,
  CONSTRAINT [PK_Users] PRIMARY KEY CLUSTERED 
 (
 	[Id] ASC
@@ -324,8 +324,8 @@ Go
 				@FirstName VARCHAR(50),
 				@LastName VARCHAR(50),
 				@Email VARCHAR(100),
-				@PasswordHash VARBINARY,
-				@PasswordSalt VARBINARY
+				@PasswordHash VARBINARY(64),
+				@PasswordSalt VARBINARY(128)
 		  )
 		AS
 		/*
@@ -411,27 +411,53 @@ Go
 			END
 		GO 
 
--- Procs - Users_GetUsersByUsername ----------------------------------------------
+-- Procs - Users_GetUserByUsername ----------------------------------------------
 -- Procs -----------------------------------------------
 -- Procs -----------------------------------------------
 -- Procs -----------------------------------------------
 
-DROP PROCEDURE IF EXISTS [dbo].[Users_GetUsersByUsername]
+DROP PROCEDURE IF EXISTS [dbo].[Users_GetUserByUsername]
 Go
 
-		CREATE PROCEDURE [dbo].[Users_GetUsersByUsername]  
+		CREATE PROCEDURE [dbo].[Users_GetUserByUsername]  
 		(
 			@Email VARCHAR (100)
 		)  
 		AS 
 		/*
 		-- Test harness
-		EXEC Users_GetUsersByUsername 'e@bubbanoosh.com.au'
+		EXEC Users_GetUserByUsername 'e@bubbanoosh.com.au'
 
 		*/ 
 			SET NOCOUNT ON --Boost Network performance
 
-			SELECT Id, FirstName, LastName, Email FROM Users u WHERE u.Email = LTRIM(RTRIM(@Email));
+			SELECT Id, FirstName, LastName, Email, PasswordHash, PasswordSalt FROM Users u WHERE u.Email = LTRIM(RTRIM(@Email));
+
+		GO 
+
+
+
+-- Procs - Users_GetUserById ----------------------------------------------
+-- Procs -----------------------------------------------
+-- Procs -----------------------------------------------
+-- Procs -----------------------------------------------
+
+DROP PROCEDURE IF EXISTS [dbo].[Users_GetUserById]
+Go
+
+		CREATE PROCEDURE [dbo].[Users_GetUserById]  
+		(
+			@Id INT
+		)  
+		AS 
+		/*
+		-- Test harness
+		EXEC Users_GetUserById 1
+
+		*/ 
+			SET NOCOUNT ON --Boost Network performance
+
+			SELECT Id, FirstName, LastName, Email FROM Users u WHERE u.Id = @Id;
 
 		GO 
 
@@ -502,8 +528,8 @@ Go
 		CREATE PROCEDURE Users_UpdatePassword
 		  (
 				@Id int,
-				@PasswordHash VARBINARY,
-				@PasswordSalt VARBINARY
+				@PasswordHash VARBINARY(64),
+				@PasswordSalt VARBINARY(128)
 		  )
 		AS
 		/*

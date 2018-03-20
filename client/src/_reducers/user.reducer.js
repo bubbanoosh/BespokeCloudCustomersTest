@@ -1,6 +1,6 @@
 import { userActionTypes as actionTypes } from '../_constants';
 
-export function users(state = {}, action) {
+export function userState(state = {}, action) {
   switch (action.type) {
     case actionTypes.GETALL_USERS_REQUEST:
       return {

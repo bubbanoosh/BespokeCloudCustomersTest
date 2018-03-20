@@ -11,6 +11,10 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using AutoMapper;
+using Bespoke.Cloud.CustomersTest.API.Helpers;
+using System.Text;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
 
 namespace Bespoke.Cloud.CustomersTest
 {
@@ -38,13 +42,43 @@ namespace Bespoke.Cloud.CustomersTest
             });
             services.AddAutoMapper();
 
+
+            // configure strongly typed settings objects
+            var appSettingsSection = Configuration.GetSection("AppSettings");
+            services.Configure<AppSettings>(appSettingsSection);
+            var appSettings = appSettingsSection.Get<AppSettings>();
+
+            // configure jwt authentication
+            var key = Encoding.ASCII.GetBytes(appSettings.JwtKey);
+            var issuer = appSettings.JwtIssuer;
+            var usingHttps = appSettings.UsingHttps;
+
+            services.AddAuthentication(x =>
+            {
+                x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+            .AddJwtBearer(x =>
+            {
+                x.RequireHttpsMetadata = usingHttps;
+                x.SaveToken = true;
+                x.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuer = false,
+                    ValidateAudience = false,
+                    ValidateLifetime = true,
+                    ValidateIssuerSigningKey = true,
+                    ValidIssuer = issuer,
+                    ValidAudience = issuer,
+                    IssuerSigningKey = new SymmetricSecurityKey(key),
+                };
+            });
+
             // register services
             services.AddScoped<ICustomerRepository, CustomerRepository>();
             services.AddScoped<ICustomerManager, CustomerManager>();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IUserManager, UserManager>();
-
-            services.AddSingleton(_ => Configuration);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -53,13 +87,6 @@ namespace Bespoke.Cloud.CustomersTest
         {
             loggerFactory.AddConsole();
             loggerFactory.AddDebug(LogLevel.Information);
-
-            // global cors policy
-            app.UseCors(x => x
-                .AllowAnyOrigin()
-                .AllowAnyMethod()
-                .AllowAnyHeader()
-                .AllowCredentials());
 
             if (env.IsDevelopment())
             {
@@ -89,6 +116,15 @@ namespace Bespoke.Cloud.CustomersTest
                     });
                 });
             }
+
+            // global cors policy
+            app.UseCors(x => x
+                .AllowAnyOrigin()
+                .AllowAnyMethod()
+                .AllowAnyHeader()
+                .AllowCredentials());
+
+            app.UseAuthentication();
 
             app.UseMvc();
         }

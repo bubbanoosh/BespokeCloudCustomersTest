@@ -1,4 +1,4 @@
-﻿using Bespoke.Cloud.CustomersTest.API.Models;
+﻿using Bespoke.Cloud.CustomersTest.API.Dtos;
 using Bespoke.Cloud.CustomersTest.Entities;
 using System;
 using System.Collections.Generic;
@@ -8,6 +8,18 @@ namespace Bespoke.Cloud.CustomersTest.Repository.Tests.TestHelpers
 {
     public class Entities
     {
+        public static CustomerDetailDto GetTestCustomerDetailDto()
+        {
+            return new CustomerDetailDto
+            {
+                Id = 1,
+                FirstName = "John",
+                LastName = "Aaaa",
+                Email = "john@aaaa.com"
+
+            };
+        }
+
         public static Customer GetTestCustomer()
         {
             return new Customer
@@ -16,7 +28,7 @@ namespace Bespoke.Cloud.CustomersTest.Repository.Tests.TestHelpers
                 FirstName = "John",
                 LastName = "Aaaa",
                 Email = "john@aaaa.com"
-                
+
             };
         }
 
@@ -67,5 +79,18 @@ namespace Bespoke.Cloud.CustomersTest.Repository.Tests.TestHelpers
                 }
             };
         }
+
+        public static User GetTestUser()
+        {
+            return new User
+            {
+                Id = 1,
+                FirstName = "John",
+                LastName = "Aaaa",
+                Email = "john@aaaa.com"
+            };
+        }
+
+
     }
 }

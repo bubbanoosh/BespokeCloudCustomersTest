@@ -5,13 +5,13 @@ namespace Bespoke.Cloud.CustomersTest.API.Helpers
 {
     // Custom exception class for throwing application specific exceptions (e.g. for validation) 
     // that can be caught and handled within the application
-    public class ApplicationException : Exception
+    public class AppException : Exception
     {
-        public ApplicationException() : base() { }
+        public AppException() : base() { }
 
-        public ApplicationException(string message) : base(message) { }
+        public AppException(string message) : base(message) { }
 
-        public ApplicationException(string message, params object[] args)
+        public AppException(string message, params object[] args)
             : base(String.Format(CultureInfo.CurrentCulture, message, args))
         {
         }

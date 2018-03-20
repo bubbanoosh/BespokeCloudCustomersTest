@@ -6,12 +6,16 @@ namespace Bespoke.Cloud.CustomersTest.API.Helpers
     {
         public AutoMapperProfile()
         {
-            CreateMap<Entities.Customer, Models.CustomerListDto>()
+            CreateMap<Entities.Customer, Dtos.CustomerListDto>()
             .ForMember(dest => dest.Name, opt => opt.MapFrom(src =>
                 $"{src.FirstName} {src.LastName}"));
 
-            CreateMap<Entities.User, Models.UserDto>();
-            CreateMap<Models.UserDto, Entities.User>();
+            CreateMap<Entities.Customer, Dtos.CustomerDetailDto>();
+
+            CreateMap<Entities.User, Dtos.UserDisplayDto>();
+
+            CreateMap<Entities.User, Dtos.UserDto>();
+            CreateMap<Dtos.UserDto, Entities.User>();
         }
     }
 }

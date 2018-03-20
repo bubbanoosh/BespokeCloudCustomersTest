@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { userActions } from '../_actions/user.actions';
+import { authActions } from '../_actions/auth.actions';
 
 import { LoginForm } from '../_components/_forms/LoginForm';
 
@@ -12,14 +12,14 @@ class LoginPage extends Component {
         super(props);
 
         // reset login status
-        this.props.dispatch(userActions.logout());
+        this.props.dispatch(authActions.logout());
     }
 
     render() {
 
         const Fragment = React.Fragment;
-        const { userState } = this.props;
-        const { loggingIn } = userState;
+        const { authState } = this.props;
+        const { loggingIn } = authState;
 
         return (
             <Fragment>
@@ -45,7 +45,7 @@ class LoginPage extends Component {
                     <LoginForm
                         loggingIn={loggingIn}
                         operationText={'Login to proceed'}
-                        userAction={userActions.login}
+                        login={authActions.login}
                     />
 
                     </div>
@@ -58,13 +58,13 @@ class LoginPage extends Component {
 
 LoginPage.propTypes = {
     dispatch: PropTypes.func.isRequired,
-    userState: PropTypes.object.isRequired,
+    authState: PropTypes.object.isRequired,
 };
 
 function mapStateToProps(state) {
-    const { userState } = state;
+    const { authState } = state;
     return {
-        userState
+        authState
     };
 }
 

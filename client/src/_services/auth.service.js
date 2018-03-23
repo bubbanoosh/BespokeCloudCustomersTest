@@ -1,4 +1,5 @@
 import { appConfig } from '../_helpers';
+import { promiseManager } from '../_helpers';
 
 export const authService = {
     login,
@@ -13,7 +14,7 @@ function login(username, password) {
     };
 
     return fetch(appConfig.API_ROOT_URL + '/users/login', requestOptions)
-        .then(handleResponse, handleError)
+        .then(promiseManager.handleResponse, promiseManager.handleError)
         .then(user => {
             // login successful if there's a jwt token in the response
             if (user && user.token) {
@@ -28,25 +29,4 @@ function login(username, password) {
 function logout() {
     // remove user from local storage to log user out
     localStorage.removeItem('user');
-}
-
-function handleResponse(response) {
-    return new Promise((resolve, reject) => {
-        if (response.ok) {
-            // return json if it was returned in the response
-            var contentType = response.headers.get("content-type");
-            if (contentType && contentType.includes("application/json")) {
-                response.json().then(json => resolve(json));
-            } else {
-                resolve();
-            }
-        } else {
-            // return error message from response body
-            response.text().then(text => reject(text));
-        }
-    });
-}
-
-function handleError(error) {
-    return Promise.reject(error && error.message);
 }

@@ -1,4 +1,5 @@
 import { authHeader, appConfig } from '../_helpers';
+import { promiseManager } from '../_helpers';
 
 export const userService = {
     getUsers,
@@ -13,7 +14,7 @@ function getUsers() {
     };
 
     return fetch(`${appConfig.API_ROOT_URL}/users`, requestOptions)
-        .then(handleResponse, handleError);
+        .then(promiseManager.handleResponse, promiseManager.handleError);
 }
 
 function removeUser(id) {
@@ -23,7 +24,7 @@ function removeUser(id) {
     };
 
     return fetch(`${appConfig.API_ROOT_URL}/users/${id}`, requestOptions)
-        .then(handleResponse, handleError);
+        .then(promiseManager.handleResponse, promiseManager.handleError);
 }
 
 function updateUser(user) {
@@ -34,26 +35,5 @@ function updateUser(user) {
     };
 
     return fetch(`${appConfig.API_ROOT_URL}/users/${user.id}`, requestOptions)
-        .then(handleResponse, handleError);
-}
-
-function handleResponse(response) {
-    return new Promise((resolve, reject) => {
-        if (response.ok) {
-            // return json if it was returned in the response
-            var contentType = response.headers.get("content-type");
-            if (contentType && contentType.includes("application/json")) {
-                response.json().then(json => resolve(json));
-            } else {
-                resolve();
-            }
-        } else {
-            // return error message from response body
-            response.text().then(text => reject(text));
-        }
-    });
-}
-
-function handleError(error) {
-    return Promise.reject(error && error.message);
+        .then(promiseManager.handleResponse, promiseManager.handleError);
 }

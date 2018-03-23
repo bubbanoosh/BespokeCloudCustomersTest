@@ -12,6 +12,8 @@ import registerServiceWorker from './registerServiceWorker';
 
 const target = document.querySelector('#root');
 
+// Renamed to index.js (https://github.com/facebook/create-react-app/issues/3052)
+
 render(
     <Provider store={store}>
         <ConnectedRouter history={history}>

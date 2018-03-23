@@ -58,7 +58,7 @@ function getCustomers(searchText) {
             .then(
                 customers => dispatch(success(customers)),
                 error => {
-                    dispatch(failure(error)),
+                    dispatch(failure(error));
                     dispatch(alertActions.error(error));
                 }
             );

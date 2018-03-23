@@ -1,4 +1,5 @@
 import { appConfig } from '../_helpers';
+import { promiseManager } from '../_helpers';
 
 export const customerService = {
     addCustomer,
@@ -16,7 +17,7 @@ function addCustomer(customer) {
     };
 
     return fetch(`${appConfig.API_ROOT_URL}/customers`, requestOptions)
-        .then(handleResponse, handleError);
+        .then(promiseManager.handleResponse, promiseManager.handleError);
 }
 
 function getCustomer(id) {
@@ -25,7 +26,7 @@ function getCustomer(id) {
     };
 
     return fetch(`${appConfig.API_ROOT_URL}/customers/${id}`, requestOptions)
-        .then(handleResponse, handleError);
+        .then(promiseManager.handleResponse, promiseManager.handleError);
 }
 
 function getCustomers(searchText) {
@@ -34,7 +35,7 @@ function getCustomers(searchText) {
     };
 
     return fetch(`${appConfig.API_ROOT_URL}/customers/list/${searchText}`, requestOptions)
-        .then(handleResponse, handleError);
+        .then(promiseManager.handleResponse, promiseManager.handleError);
 }
 
 function removeCustomer(id) {
@@ -43,7 +44,7 @@ function removeCustomer(id) {
     };
 
     return fetch(`${appConfig.API_ROOT_URL}/customers/${id}`, requestOptions)
-        .then(handleResponse, handleError);
+        .then(promiseManager.handleResponse, promiseManager.handleError);
 }
 
 function updateCustomer(customer) {
@@ -54,27 +55,5 @@ function updateCustomer(customer) {
     };
 
     return fetch(`${appConfig.API_ROOT_URL}/customers/${customer.id}`, requestOptions)
-        .then(handleResponse, handleError);
+        .then(promiseManager.handleResponse, promiseManager.handleError);
 }
-
-function handleResponse(response) {
-    return new Promise((resolve, reject) => {
-        if (response.ok) {
-            // return json if it was returned in the response
-            var contentType = response.headers.get("content-type");
-            if (contentType && contentType.includes("application/json")) {
-                response.json().then(json => resolve(json));
-            } else {
-                resolve();
-            }
-        } else {
-            // return error message from response body
-            response.text().then(text => reject(text));
-        }
-    });
-}
-
-function handleError(error) {
-    return Promise.reject(error && error.message);
-}
-

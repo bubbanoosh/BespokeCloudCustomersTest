@@ -20,7 +20,7 @@ namespace Bespoke.Cloud.CustomersTest.API.Controllers
 {
     [Authorize]
     [Produces("application/json")]
-    [Route("api/[controller]")]
+    [Route("api/users")]
     public class UsersController : Controller
     {
         private ILogger<UsersController> _logger;
@@ -109,7 +109,7 @@ namespace Bespoke.Cloud.CustomersTest.API.Controllers
         public IActionResult GetUsers()
         {
             var users = _usersManager.GetUsers("");
-            var usersToReturn = Mapper.Map<IEnumerable<UserDisplayDto>>(users);
+            var usersToReturn = _mapper.Map<IEnumerable<UserDisplayDto>>(users);
 
             return Ok(usersToReturn);
         }
@@ -123,7 +123,7 @@ namespace Bespoke.Cloud.CustomersTest.API.Controllers
         public IActionResult GetUsers(string searchText = "")
         {
             var users = _usersManager.GetUsers(searchText);
-            var usersToReturn = Mapper.Map<IEnumerable<UserDisplayDto>>(users);
+            var usersToReturn = _mapper.Map<IEnumerable<UserDisplayDto>>(users);
 
             return Ok(usersToReturn);
         }
@@ -144,7 +144,7 @@ namespace Bespoke.Cloud.CustomersTest.API.Controllers
             }
             else
             {
-                var userDto = Mapper.Map<UserDisplayDto>(user);
+                var userDto = _mapper.Map<UserDisplayDto>(user);
                 return Ok(userDto);
             }
         }

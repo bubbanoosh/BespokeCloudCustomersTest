@@ -35,17 +35,7 @@ namespace Bespoke.Cloud.CustomersTest.Repository.Tests
         {
             // Arrange
             IList<Customer> moqCustomersList = TestHelpers.Entities.GetTestCustomersList();
-            IList<CustomerListDto> moqCustomerListDto = TestHelpers.Entities.GetTestCustomersListDto();
-
-            //// -- AutoMapper Config for TEST
-            //Mapper.Initialize(cfg =>
-            //{
-            //    cfg.CreateMap<Entities.Customer, API.Dtos.CustomerListDto>()
-            //        .ForMember(dest => dest.Name, opt => opt.MapFrom(src =>
-            //            $"{src.FirstName} {src.LastName}"));
-
-            //});
-            //Mapper.AssertConfigurationIsValid();
+            IList<CustomerListDto> moqCustomerListDto = new List<CustomerListDto>();//TestHelpers.Entities.GetTestCustomersListDto();
 
             var mockCustomerManager = new Mock<ICustomerManager>();
             mockCustomerManager.Setup(x => x.GetCustomers("")).Returns(moqCustomersList);
@@ -68,7 +58,7 @@ namespace Bespoke.Cloud.CustomersTest.Repository.Tests
         {
             // Arrange
             Customer moqCustomer = TestHelpers.Entities.GetTestCustomer();
-            CustomerDetailDto moqCustomerDetailDto = TestHelpers.Entities.GetTestCustomerDetailDto();
+            CustomerDetailDto moqCustomerDetailDto = null;//TestHelpers.Entities.GetTestCustomerDetailDto();
             var customerId = 1;
 
             var mockCustomerManager = new Mock<ICustomerManager>();
@@ -77,7 +67,7 @@ namespace Bespoke.Cloud.CustomersTest.Repository.Tests
             var mockIMapper = new Mock<IMapper>();
 
             var customerControllerTest = new CustomersController(mockCustomerManager.Object, mockILogger.Object, mockIMapper.Object);
-            //moqCustomer.Id = customerId;
+            moqCustomer.Id = customerId;
 
             // Act
             IActionResult result = customerControllerTest.Get(customerId);

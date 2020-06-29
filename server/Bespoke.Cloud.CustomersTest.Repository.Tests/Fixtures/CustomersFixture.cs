@@ -8,22 +8,22 @@ namespace Bespoke.Cloud.CustomersTest.Repository.Tests.Fixtures
     {
         public CustomersFixture()
         {
-            Mapper.Initialize(cfg =>
-            {
-                cfg.AddProfile<AutoMapperProfile>();
+            // Mapper.Initialize(cfg =>
+            // {
+            //     cfg.AddProfile<AutoMapperProfile>();
 
 
-                //cfg.CreateMap<Entities.Customer, API.Dtos.CustomerListDto>()
-                //    .ForMember(dest => dest.Name, opt => opt.MapFrom(src =>
-                //        $"{src.FirstName} {src.LastName}"));
+            //     //cfg.CreateMap<Entities.Customer, API.Dtos.CustomerListDto>()
+            //     //    .ForMember(dest => dest.Name, opt => opt.MapFrom(src =>
+            //     //        $"{src.FirstName} {src.LastName}"));
 
-                //cfg.CreateMap<Entities.Customer, API.Dtos.CustomerDetailDto>();
-            });
+            //     //cfg.CreateMap<Entities.Customer, API.Dtos.CustomerDetailDto>();
+            // });
 
         }
         public void Dispose()
         {
-            Mapper.Reset();
+            //Mapper.Reset();
         }
     }
 }

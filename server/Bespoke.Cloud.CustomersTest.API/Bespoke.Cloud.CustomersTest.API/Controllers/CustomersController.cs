@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace Bespoke.Cloud.CustomersTest.API.Controllers
 {
-    [Authorize]
+    //[Authorize]
     [Produces("application/json")]
     [Route("api/Customers")]
     public class CustomersController : Controller
@@ -22,7 +22,8 @@ namespace Bespoke.Cloud.CustomersTest.API.Controllers
 
         public CustomersController(ICustomerManager customerManger,
             ILogger<CustomersController> logger,
-            IMapper mapper)
+            IMapper mapper
+            )
         {
             _customerManager = customerManger;
             _logger = logger;
@@ -37,7 +38,7 @@ namespace Bespoke.Cloud.CustomersTest.API.Controllers
         public IActionResult GetCustomers()
         {
             var customers = _customerManager.GetCustomers("");
-            var customersToReturn = Mapper.Map<IEnumerable<CustomerListDto>>(customers);
+            var customersToReturn = _mapper.Map<IEnumerable<CustomerListDto>>(customers);
 
             return Ok(customersToReturn);
         }
@@ -51,7 +52,7 @@ namespace Bespoke.Cloud.CustomersTest.API.Controllers
         public IActionResult GetCustomers(string searchText = "")
         {
             var customers = _customerManager.GetCustomers(searchText);
-            var customersToReturn = Mapper.Map<IEnumerable<CustomerListDto>>(customers);
+            var customersToReturn = _mapper.Map<IEnumerable<CustomerListDto>>(customers);
 
             return Ok(customersToReturn);
         }
@@ -72,7 +73,7 @@ namespace Bespoke.Cloud.CustomersTest.API.Controllers
             }
             else
             {
-                var customerDto = Mapper.Map<CustomerDetailDto>(customer);
+                var customerDto = _mapper.Map<CustomerDetailDto>(customer);
                 return Ok(customerDto);
             }
         }

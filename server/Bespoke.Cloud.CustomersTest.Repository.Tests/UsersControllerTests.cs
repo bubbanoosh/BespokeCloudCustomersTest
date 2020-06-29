@@ -25,17 +25,19 @@ using Bespoke.Cloud.CustomersTest.Repository.Tests.Fixtures;
 
 namespace Bespoke.Cloud.CustomersTest.Repository.Tests
 {
-    public class UsersControllerTests //: IClassFixture<UsersFixture>
+    public class UsersControllerTests //: TestServerDependent //: IClassFixture<UsersFixture>
     {
         private readonly TestServer _server;
         private readonly HttpClient _client;
 
-        UsersFixture _usersFixture;
+        //UsersFixture _usersFixture;
+        //TestServerFixture _fixture;
 
-        public UsersControllerTests()//UsersFixture usersFixture)
+        public UsersControllerTests()//TestServerFixture fixture)
+        //: base(fixture)
         {
             //_usersFixture = usersFixture;
-
+            //_fixture = fixture;
 
             var configuration = new ConfigurationBuilder()
             .SetBasePath(Path.GetFullPath(@"../../../"))

@@ -58,9 +58,9 @@ namespace Bespoke.Cloud.CustomersTest.Business
         /// </summary>
         /// <param name="searchText"></param>
         /// <returns></returns>
-        public IList<User> GetUsers(string searchText = "")
+        public async Task<IList<User>> GetUsers(string searchText = "")
         {
-            return _userRepository.GetUsers(searchText);
+            return await _userRepository.GetUsers(searchText);
         }
 
         /// <summary>
@@ -140,7 +140,9 @@ namespace Bespoke.Cloud.CustomersTest.Business
         {
             //var user = new User { Id = 1, FirstName = "Errol", LastName = "Willy", Email = "e@bubbanoosh.com.au" };
             if (string.IsNullOrWhiteSpace(username) || string.IsNullOrWhiteSpace(password))
+            {
                 throw new ApplicationException("Username and password are required!");
+            }
 
             var user = await GetUserByEmail(username);
 

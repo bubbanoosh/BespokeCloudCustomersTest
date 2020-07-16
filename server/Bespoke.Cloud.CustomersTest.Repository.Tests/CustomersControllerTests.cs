@@ -10,26 +10,12 @@ using Bespoke.Cloud.CustomersTest.API.Dtos;
 using System.Collections.Generic;
 using AutoMapper;
 using Bespoke.Cloud.CustomersTest.Repository.Tests.EqualityComparers;
-using Microsoft.AspNetCore.TestHost;
-using System.Net.Http;
-using Microsoft.Extensions.Configuration;
-using Microsoft.AspNetCore.Hosting;
-using System.IO;
 using FluentAssertions;
-using Bespoke.Cloud.CustomersTest.Repository.Tests.Fixtures;
 
 namespace Bespoke.Cloud.CustomersTest.Repository.Tests
 {
-    public class CustomersControllerTests : IClassFixture<CustomersFixture>
+    public class CustomersControllerTests
     {
-        CustomersFixture _customersFixture;
-
-        public CustomersControllerTests(CustomersFixture customersFixture)
-        {
-            _customersFixture = customersFixture;
-        }
-
-
         [Fact(DisplayName = "CustomersController: GetCustomersReturnsCustomers")]
         public void GetCustomersReturnsCustomers()
         {
@@ -166,7 +152,5 @@ namespace Bespoke.Cloud.CustomersTest.Repository.Tests
             // Assert
             Assert.Equal(moqCustomer, createdAtRouteResult.Value);
         }
-
-
     }
 }

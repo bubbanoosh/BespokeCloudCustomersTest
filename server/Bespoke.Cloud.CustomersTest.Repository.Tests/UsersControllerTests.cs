@@ -1,96 +1,148 @@
-﻿using Bespoke.Cloud.CustomersTest.Entities;
-using Moq;
-using Xunit;
-using Bespoke.Cloud.CustomersTest.Business.Interfaces;
-using Bespoke.Cloud.CustomersTest.API.Controllers;
-using Microsoft.Extensions.Logging;
-using Microsoft.AspNetCore.Mvc;
-using Bespoke.Cloud.CustomersTest.API.Helpers;
-using Bespoke.Cloud.CustomersTest.API.Dtos;
-using System.Collections.Generic;
-using AutoMapper;
-using Bespoke.Cloud.CustomersTest.Repository.Tests.EqualityComparers;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.TestHost;
-using Microsoft.Extensions.Configuration;
+﻿using Xunit;
 using Newtonsoft.Json.Linq;
-using System.IO;
-using System.Net;
-using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Text;
 using System.Threading.Tasks;
-using Microsoft.Extensions.DependencyInjection;
-using Bespoke.Cloud.CustomersTest.Repository.Tests.Fixtures;
+using Bespoke.Cloud.CustomersTest.Business.Interfaces;
+using Moq;
+using Bespoke.Cloud.CustomersTest.Entities;
+using System.Collections.Generic;
+using Microsoft.Extensions.Logging;
+using Bespoke.Cloud.CustomersTest.API.Controllers;
+using AutoMapper;
+using Microsoft.Extensions.Options;
+using Bespoke.Cloud.CustomersTest.API.Helpers;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
+using System;
+using Bespoke.Cloud.CustomersTest.API.Dtos;
+using FluentAssertions;
 
 namespace Bespoke.Cloud.CustomersTest.Repository.Tests
 {
-    public class UsersControllerTests //: TestServerDependent //: IClassFixture<UsersFixture>
+    public class UsersControllerTests
     {
-        private readonly TestServer _server;
-        private readonly HttpClient _client;
-
-        //UsersFixture _usersFixture;
-        //TestServerFixture _fixture;
-
-        public UsersControllerTests()//TestServerFixture fixture)
-        //: base(fixture)
+        private UsersController SetUpUsersController(Mock<IUserManager> mockUserManager)
         {
-            //_usersFixture = usersFixture;
-            //_fixture = fixture;
+            var mockILogger = new Mock<ILogger<UsersController>>();
+            var mockIMapper = new Mock<IMapper>();
+            var mockIOptions = new Mock<IOptions<AppSettings>>();
 
-            var configuration = new ConfigurationBuilder()
-            .SetBasePath(Path.GetFullPath(@"../../../"))
-            .AddJsonFile("appsettings.json", optional: false)
-            .Build();
+            // var services = Mock.Of<IOptions<AppSettings>>(ap => ap).;
 
-            _server = new TestServer(new WebHostBuilder()
-                .UseStartup<Startup>()
-                .UseConfiguration(configuration));
-            _client = _server.CreateClient();
+            var usersController = new UsersController(mockUserManager.Object, mockILogger.Object
+                , mockIMapper.Object, mockIOptions.Object);
 
-
+            return usersController;
         }
 
-        [Fact(DisplayName = "UsersController: UnAuthorisedAccess to Users list")]
-        public async Task UnAuthorisedAccess()
+        [Fact(DisplayName = "UsersController: Get Users has UnAuthorizedAttribute")]
+        public void GetUsersHasUnAuthorizedAttribute()
         {
-            var response = await _client.GetAsync("/api/users");
+            var mockUserManager = new Mock<IUserManager>();
+            mockUserManager
+                .Setup(x => x.GetUsers(string.Empty))
+                .ReturnsAsync((IList<User>)null);
 
-            Assert.Equal(HttpStatusCode.Unauthorized, response.StatusCode);
+            var userControllerTest = SetUpUsersController(mockUserManager);
+
+            // Called GetUsers("") to detect the Authorize attr
+            // Need to differentiate between overloads
+            var actualAttribute = userControllerTest
+                .GetType()
+                .GetMethod("GetUsers", new Type[] { typeof(string) })
+                .GetCustomAttributes(typeof(AuthorizeAttribute), true);
+
+            Assert.Equal(typeof(AuthorizeAttribute), actualAttribute[0].GetType());
+        }
+
+        [Fact(DisplayName = "UsersController: Register has AllowAnonymousAttribute")]
+        public void RegisterHasUnAuthorizedAttribute()
+        {
+            var mockUserManager = new Mock<IUserManager>();
+            mockUserManager
+                .Setup(x => x.Register(new User(), ""))
+                .Returns(Task.FromResult(new User()));
+
+            var userControllerTest = SetUpUsersController(mockUserManager);
+
+            var actualAttribute = userControllerTest
+                .GetType()
+                .GetMethod("Register")
+                .GetCustomAttributes(typeof(AllowAnonymousAttribute), true);
+
+            Assert.Equal(typeof(AllowAnonymousAttribute), actualAttribute[0].GetType());
+        }
+
+        [Fact(DisplayName = "UsersController: Authenticate BadRequest Missing user or pass")]
+        public async Task AuthenticateUserReturnsBadRequestForMissingUsernameOrPassword()
+        {
+            // Arrange
+            var moqUser = TestHelpers.Entities.GetTestUser();
+
+            var mockUserManager = new Mock<IUserManager>();
+            mockUserManager
+                .Setup(x => x.Authenticate(moqUser.Email, "N00sh1970"))
+                .Returns(Task.FromResult(moqUser));
+
+            var userControllerTest = SetUpUsersController(mockUserManager);
+
+            //var bodyString = @"{email: ""e@bubbanoosh.com.au"", password: ""N00sh1970""}";
+            // var response = await _client.PostAsync("/api/users/login", new StringContent(bodyString, Encoding.UTF8, "application/json"));
+
+            const string missingPassword = "";
+            var userDto = new UserDto() { Email = "e@bubbanoosh.com.au", Password = missingPassword };
+
+            var result = await userControllerTest.Authenticate(userDto);
+            Assert.IsType<BadRequestObjectResult>(result);
+
+            var responseString = result.As<ObjectResult>();
+            Assert.Contains("Username or password is incorrect", responseString.Value.ToString());            
         }
 
         [Fact(DisplayName = "UsersController: Authenticate and get Token")]
-        public async Task AuthenticateUser()
+        public async Task AuthenticateUserReturnsOkWithToken()
         {
-            var bodyString = @"{email: ""e@bubbanoosh.com.au"", password: ""N00sh1970""}";
-            var response = await _client.PostAsync("/api/users/login", new StringContent(bodyString, Encoding.UTF8, "application/json"));
+            // Arrange
+            var moqUser = TestHelpers.Entities.GetTestUser();
+            const string password = "N00sh1970";
 
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            var mockUserManager = new Mock<IUserManager>();
+            mockUserManager
+                .Setup(x => x.Authenticate(It.IsAny<string>(), It.IsAny<string>()))
+                .ReturnsAsync(moqUser);
 
-            var responseString = await response.Content.ReadAsStringAsync();
+            var userControllerTest = SetUpUsersController(mockUserManager);
+
+            //var bodyString = @"{email: ""e@bubbanoosh.com.au"", password: ""N00sh1970""}";
+            // var response = await _client.PostAsync("/api/users/login", new StringContent(bodyString, Encoding.UTF8, "application/json"));
+
+            var userDto = new UserDto() { Email = "e@bubbanoosh.com.au", Password = password };
+
+            var result = await userControllerTest.Authenticate(userDto);
+            var okResult = Assert.IsType<OkObjectResult>(result);
+
+            var responseString = result.As<string>();
             var responseJson = JObject.Parse(responseString);
             Assert.NotNull((string)responseJson["token"]);
         }
 
-        [Fact(DisplayName = "UsersController: GetUsers with Authorisation")]
-        public async Task GetUsersList()
-        {
-            var bodyString = @"{username: ""e@bubbanoosh.com.au"", password: ""N00sh1970""}";
-            var response = await _client.PostAsync("/api/users", new StringContent(bodyString, Encoding.UTF8, "application/json"));
-            var responseString = await response.Content.ReadAsStringAsync();
-            var responseJson = JObject.Parse(responseString);
-            var token = (string)responseJson["token"];
+        //[Fact(DisplayName = "UsersController: GetUsers with Authorisation")]
+        //public async Task GetUsersList()
+        //{
+        //    var bodyString = @"{username: ""e@bubbanoosh.com.au"", password: ""N00sh1970""}";
+        //    var response = await _client.PostAsync("/api/users", new StringContent(bodyString, Encoding.UTF8, "application/json"));
+        //    var responseString = await response.Content.ReadAsStringAsync();
+        //    var responseJson = JObject.Parse(responseString);
+        //    var token = (string)responseJson["token"];
 
-            var requestMessage = new HttpRequestMessage(HttpMethod.Get, "/api/users");
-            requestMessage.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
-            var usersResponse = await _client.SendAsync(requestMessage);
+        //    var requestMessage = new HttpRequestMessage(HttpMethod.Get, "/api/users");
+        //    requestMessage.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
+        //    var usersResponse = await _client.SendAsync(requestMessage);
 
-            Assert.Equal(HttpStatusCode.OK, usersResponse.StatusCode);
+        //    Assert.Equal(HttpStatusCode.OK, usersResponse.StatusCode);
 
-            var userResponseString = await usersResponse.Content.ReadAsStringAsync();
-            var userResponseJson = JArray.Parse(userResponseString);
-            Assert.True(userResponseJson.Count == 4);
-        }
+        //    var userResponseString = await usersResponse.Content.ReadAsStringAsync();
+        //    var userResponseJson = JArray.Parse(userResponseString);
+        //    Assert.True(userResponseJson.Count == 4);
+        //}
     }
 }

@@ -77,14 +77,14 @@ namespace Bespoke.Cloud.CustomersTest.Repository
         /// </summary>
         /// <param name="searchText"></param>
         /// <returns></returns>
-        public IList<User> GetUsers(string searchText = "")
+        public async Task<IList<User>> GetUsers(string searchText = "")
         {
             using (var connection = GetOpenConnection())
             {
                 DynamicParameters parameters = new DynamicParameters();
                 parameters.Add("@SearchText", searchText);
-                IList<User> userList = SqlMapper.Query<User>(connection, "Users_GetAllUsers", param: parameters, commandType: StoredProcedure).ToList();
-                return userList;
+                IEnumerable<User> userList = await SqlMapper.QueryAsync<User>(connection, "Users_GetAllUsers", param: parameters, commandType: StoredProcedure).ConfigureAwait(false);
+                return userList.ToList();
             }
         }
 

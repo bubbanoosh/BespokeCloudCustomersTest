@@ -13,7 +13,6 @@ using System.Text;
 using System.Security.Claims;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.Extensions.Options;
-using Microsoft.Extensions.Configuration;
 using System.Threading.Tasks;
 
 namespace Bespoke.Cloud.CustomersTest.API.Controllers
@@ -31,7 +30,6 @@ namespace Bespoke.Cloud.CustomersTest.API.Controllers
         public UsersController(IUserManager userManger,
             ILogger<UsersController> logger,
             IMapper mapper,
-            IConfiguration config,
             IOptions<AppSettings> appSettings
             )
         {
@@ -105,10 +103,11 @@ namespace Bespoke.Cloud.CustomersTest.API.Controllers
         /// GET: api/Users
         /// </summary>
         /// <returns></returns>
+        [Authorize]
         [HttpGet]
-        public IActionResult GetUsers()
+        public async Task<IActionResult> GetUsers()
         {
-            var users = _usersManager.GetUsers("");
+            var users = await _usersManager.GetUsers("");
             var usersToReturn = _mapper.Map<IEnumerable<UserDisplayDto>>(users);
 
             return Ok(usersToReturn);
@@ -119,10 +118,11 @@ namespace Bespoke.Cloud.CustomersTest.API.Controllers
         /// </summary>
         /// <param name="searchText"></param>
         /// <returns></returns>
+        [Authorize]
         [HttpGet("list/{searchText?}", Name = "SearchUsers")]
-        public IActionResult GetUsers(string searchText = "")
+        public async Task<IActionResult> GetUsers(string searchText = "")
         {
-            var users = _usersManager.GetUsers(searchText);
+            var users = await _usersManager.GetUsers(searchText);
             var usersToReturn = _mapper.Map<IEnumerable<UserDisplayDto>>(users);
 
             return Ok(usersToReturn);
@@ -212,7 +212,7 @@ namespace Bespoke.Cloud.CustomersTest.API.Controllers
         }
 
         #region Private methods
-        private string CreateToken(int userId)
+        public string CreateToken(int userId)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(_appSettings.JwtKey);

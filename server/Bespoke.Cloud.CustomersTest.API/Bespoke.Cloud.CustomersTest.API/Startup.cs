@@ -1,4 +1,5 @@
 ﻿using Bespoke.Cloud.CustomersTest.Business;
+using Bespoke.Cloud.CustomersTest.Business.Customers;
 using Bespoke.Cloud.CustomersTest.Business.Interfaces;
 using Bespoke.Cloud.CustomersTest.Repository;
 using Bespoke.Cloud.CustomersTest.Repository.Interfaces;
@@ -42,7 +43,6 @@ namespace Bespoke.Cloud.CustomersTest
             });
             services.AddAutoMapper();
 
-
             // configure strongly typed settings objects
             var appSettingsSection = Configuration.GetSection("AppSettings");
             services.Configure<AppSettings>(appSettingsSection);
@@ -76,7 +76,7 @@ namespace Bespoke.Cloud.CustomersTest
 
             // register services
             services.AddScoped<ICustomerRepository, CustomerRepository>();
-            services.AddScoped<ICustomerManager, CustomerManager>();
+            services.AddScoped<ICustomerManager, CustomersManager>();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IUserManager, UserManager>();
         }

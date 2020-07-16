@@ -3,13 +3,13 @@ using Bespoke.Cloud.CustomersTest.Entities;
 using Bespoke.Cloud.CustomersTest.Repository.Interfaces;
 using System.Collections.Generic;
 
-namespace Bespoke.Cloud.CustomersTest.Business
+namespace Bespoke.Cloud.CustomersTest.Business.Customers
 {
-    public class CustomerManager: ICustomerManager
+    public class CustomersManager: ICustomerManager
     {
         ICustomerRepository _customerRepository;
 
-        public CustomerManager(ICustomerRepository customerRepository)
+        public CustomersManager(ICustomerRepository customerRepository)
         {
             _customerRepository = customerRepository;
         }
